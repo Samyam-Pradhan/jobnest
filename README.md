@@ -1,1 +1,4 @@
-# job-portal
+# Job Portal Django
+
+# Author 
+Samyam Pradhan
