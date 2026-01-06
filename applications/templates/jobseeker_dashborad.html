@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Seeker Dashboard</title>
+</head>
+<body>
+    <h1>Job Seeker Dashboard</h1>
+    <p>Welcome, {{ request.user.username }}</p>
+    <a href="{% url 'profile' %}">Profile</a> |
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>
