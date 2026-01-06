@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'job_portal_db',   # your database name
+        'USER': 'job_admin',       # your PostgreSQL user
+        'PASSWORD': 'jobportal123',# the password you set for job_admin
+        'HOST': 'localhost',       # PostgreSQL server is local
+        'PORT': '5432',            # default PostgreSQL port
     }
 }
 
