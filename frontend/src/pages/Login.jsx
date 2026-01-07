@@ -1,16 +1,34 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
+  const API_URL = "http://127.0.0.1:8000/api/accounts/login/";
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (role === "jobseeker") navigate("/jobseeker-dashboard");
-    else navigate("/employer-dashboard");
+    setError("");
+
+    try {
+      const res = await axios.post(API_URL, { email, password });
+      // save tokens
+      localStorage.setItem("access_token", res.data.access);
+      localStorage.setItem("refresh_token", res.data.refresh);
+      localStorage.setItem("user_role", res.data.user.role);
+
+      // redirect by role
+      if (res.data.user.role === "job_seeker") navigate("/jobseeker-dashboard");
+      else navigate("/employer-dashboard");
+    } catch (err) {
+      console.error(err.response?.data);
+      setError(err.response?.data.detail || "Login failed");
+    }
   };
 
   const handleSignup = () => navigate("/signup");
@@ -18,7 +36,9 @@ function Login() {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">Login as {role}</h2>
+        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+          Login as {role}
+        </h2>
         <form onSubmit={handleLogin} className="flex flex-col space-y-4">
           <input
             type="email"
@@ -36,6 +56,8 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+
           <button
             type="submit"
             className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
