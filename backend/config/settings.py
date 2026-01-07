@@ -79,7 +79,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'job_portal_db',   # your database name
-        'USER': 'job_admin',       # your PostgreSQL user
+        'USER': 'job_user',       # your PostgreSQL user
         'PASSWORD': 'jobportal123',# the password you set for job_admin
         'HOST': 'localhost',       # PostgreSQL server is local
         'PORT': '5432',            # default PostgreSQL port
