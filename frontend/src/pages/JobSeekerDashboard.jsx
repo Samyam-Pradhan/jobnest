@@ -13,53 +13,44 @@ function JobSeekerDashboard() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
 
-      <div className="flex flex-1 bg-gray-100">
+      {/* Middle Section: Sidebar + Main */}
+      <div className="flex flex-1 min-h-[calc(100vh-64px)] p-6 gap-6">
         {/* Sidebar */}
-        <aside className="w-64 bg-white p-4 border-r border-gray-300">
-          <h3 className="text-lg font-bold mb-4">My Dashboard</h3>
-          <ul className="space-y-2">
-            <li>
-              <button
-                onClick={() => setActiveSection("profile")}
-                className={`w-full text-left px-2 py-1 rounded ${
-                  activeSection === "profile"
-                    ? "bg-indigo-100 font-semibold"
-                    : "hover:bg-gray-200"
-                }`}
-              >
-                Profile
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => setActiveSection("jobs")}
-                className={`w-full text-left px-2 py-1 rounded ${
-                  activeSection === "jobs"
-                    ? "bg-indigo-100 font-semibold"
-                    : "hover:bg-gray-200"
-                }`}
-              >
-                Job Listings
-              </button>
-            </li>
-            <li>
-              <button className="w-full text-left px-2 py-1 hover:bg-gray-200 rounded">
-                Saved Jobs
-              </button>
-            </li>
-            <li>
-              <button className="w-full text-left px-2 py-1 hover:bg-gray-200 rounded">
-                Applied Jobs
-              </button>
-            </li>
-          </ul>
+        <aside className="w-64 bg-white shadow-md border border-gray-200 p-6 flex flex-col rounded-xl">
+          <h2 className="text-2xl font-bold text-indigo-600 mb-6">Dashboard</h2>
+          <button
+            onClick={() => setActiveSection("profile")}
+            className={`w-full px-3 py-2 rounded-lg mb-2 transition-colors ${
+              activeSection === "profile"
+                ? "bg-indigo-100 text-indigo-700 font-semibold"
+                : "hover:bg-gray-100 text-gray-700"
+            }`}
+          >
+            Profile
+          </button>
+          <button
+            onClick={() => setActiveSection("jobs")}
+            className={`w-full px-3 py-2 rounded-lg mb-2 transition-colors ${
+              activeSection === "jobs"
+                ? "bg-indigo-100 text-indigo-700 font-semibold"
+                : "hover:bg-gray-100 text-gray-700"
+            }`}
+          >
+            Job Listings
+          </button>
+          <button className="w-full px-3 py-2 rounded-lg mb-2 hover:bg-gray-100">
+            Saved Jobs
+          </button>
+          <button className="w-full px-3 py-2 rounded-lg hover:bg-gray-100">
+            Applied Jobs
+          </button>
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 flex flex-col items-center">
+        <main className="flex-1 p-8 bg-gray-50 rounded-xl">
           {activeSection === "profile" ? (
             <JobSeekerProfile />
           ) : (
@@ -67,42 +58,53 @@ function JobSeekerDashboard() {
               {/* Search Bar */}
               <form
                 onSubmit={handleSearch}
-                className="w-full max-w-lg flex border border-gray-300 rounded overflow-hidden mb-6"
+                className="max-w-xl mx-auto flex border border-gray-300 rounded-lg overflow-hidden mb-8 shadow-sm"
               >
                 <input
                   type="text"
-                  placeholder="Search by title, skill or organization"
+                  placeholder="Search by title, skill or company"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="flex-1 px-4 py-2 focus:outline-none"
                 />
-                <button
-                  type="submit"
-                  className="bg-indigo-600 text-white px-4 py-2 hover:bg-indigo-700 transition"
-                >
+                <button className="bg-indigo-600 text-white px-4 py-2 hover:bg-indigo-700 transition">
                   Search
                 </button>
               </form>
 
               {/* Job Listings */}
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div className="p-4 bg-white rounded shadow">
-                  <h3 className="font-bold text-lg">Software Engineer</h3>
-                  <p>Company XYZ</p>
-                  <p>Location: Kathmandu</p>
-                  <button className="mt-2 px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
-                    Apply
-                  </button>
-                </div>
-
-                <div className="p-4 bg-white rounded shadow">
-                  <h3 className="font-bold text-lg">Frontend Developer</h3>
-                  <p>Company ABC</p>
-                  <p>Location: Lalitpur</p>
-                  <button className="mt-2 px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
-                    Apply
-                  </button>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[
+                  {
+                    title: "Software Engineer",
+                    company: "Company XYZ",
+                    location: "Kathmandu",
+                  },
+                  {
+                    title: "Frontend Developer",
+                    company: "Company ABC",
+                    location: "Lalitpur",
+                  },
+                  {
+                    title: "Backend Developer",
+                    company: "Company DEF",
+                    location: "Bhaktapur",
+                  },
+                ].map((job, index) => (
+                  <div
+                    key={index}
+                    className="p-5 bg-white rounded-lg shadow hover:shadow-lg transition flex flex-col justify-between"
+                  >
+                    <div>
+                      <h3 className="font-bold text-xl mb-2">{job.title}</h3>
+                      <p className="text-gray-600">{job.company}</p>
+                      <p className="text-gray-500 text-sm mt-1">{job.location}</p>
+                    </div>
+                    <button className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
+                      Apply
+                    </button>
+                  </div>
+                ))}
               </div>
             </>
           )}
