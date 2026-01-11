@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
 
 function Signup() {
   const navigate = useNavigate();
@@ -68,7 +71,9 @@ function Signup() {
   const handleLogin = () => navigate("/login");
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <>
+    <Navbar />
+    <div className="flex items-center justify-center min-h-screen bg-white-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Signup as <span className="text-indigo-600">{role}</span>
@@ -139,6 +144,9 @@ function Signup() {
         </p>
       </div>
     </div>
+    
+    <Footer />
+    </>
   );
 }
 

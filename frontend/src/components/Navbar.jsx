@@ -4,26 +4,21 @@ import { Link, useNavigate } from "react-router-dom";
 function Navbar() {
   const navigate = useNavigate();
 
-  // Check if the user is logged in (by checking for the access token)
   const isLoggedIn = !!localStorage.getItem("access_token");
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/login"); // redirect to login page after logout
+    navigate("/login"); 
   };
 
   return (
     <nav className="bg-white border-b border-gray-300 p-4 flex justify-between items-center">
-      {/* Logo */}
       <Link to="/" className="text-2xl font-bold text-gray-800">
         JobNest
       </Link>
-
-      {/* Buttons */}
       <div className="flex gap-3">
         {!isLoggedIn ? (
           <>
-            {/* Login Button */}
             <Link
               to="/login"
               className="px-5 py-2.5 border-2 border-black rounded-full text-black hover:bg-gray-100 transition"

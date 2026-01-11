@@ -18,13 +18,15 @@ function Home() {
     <>
       <Navbar />
 
-      <div className="min-h-screen flex bg-white-50">
+      {/* Main Container */}
+      <div className="min-h-screen flex bg-white">
+        
         {/* Left Section (Image) */}
         <div className="hidden md:flex w-1/2 items-center justify-center px-16">
           <img
             src={jobImage}
             alt="Job illustration"
-            className="w-2/3"
+            className="w-[90%] max-w-none max-h-[85vh] object-contain"
           />
         </div>
 
@@ -66,6 +68,7 @@ function Home() {
         </div>
       </div>
 
+      {/* Footer directly attached */}
       <Footer />
     </>
   );
