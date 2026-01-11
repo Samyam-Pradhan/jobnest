@@ -1,20 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function JobSeekerProfile() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    full_name: "",
     email: "",
     address: "",
     mobile: "",
     gender: "",
-    educationLevel: "",
+    education_level: "",
     degree: "",
     university: "",
-    preferredIndustry: "",
-    jobLevel: "",
+    preferred_industry: "",
+    job_level: "",
     cv: null,
   });
 
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState("");
+
+  // Get JWT from localStorage (stored at login)
+  const token = localStorage.getItem("access_token");
+
+  // Axios instance with JWT
+  const api = axios.create({
+    baseURL: "http://127.0.0.1:8000/api/profile/", // base API path
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  // Fetch existing profile
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await api.get(""); // ✅ fetch from base URL
+        setFormData({
+          ...res.data,
+          cv: null, // reset file input
+        });
+      } catch (err) {
+        console.error(err);
+        setMessage("Failed to load profile.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []); // empty dependency → run once
+
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData({
@@ -23,32 +59,53 @@ function JobSeekerProfile() {
     });
   };
 
-  const handleSubmit = (e) => {
+  // Submit updated profile
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: send data to backend
-    console.log(formData);
+    const data = new FormData();
+
+    for (const key in formData) {
+      if (formData[key] !== null) {
+        data.append(key, formData[key]);
+      }
+    }
+
+    try {
+      await api.patch("", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setMessage("Profile updated successfully!");
+    } catch (err) {
+      console.error(err);
+      setMessage("Failed to update profile.");
+    }
   };
+
+  if (loading) return <p>Loading profile...</p>;
 
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow">
       <h2 className="text-2xl font-bold mb-6">My Profile</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      {message && <p className="mb-4 text-green-600">{message}</p>}
 
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6"
+        encType="multipart/form-data"
+      >
         {/* Personal Info */}
         <section>
           <h3 className="text-lg font-semibold mb-3">Personal Information</h3>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
-              name="fullName"
+              name="full_name"
               placeholder="Full Name"
-              value={formData.fullName}
+              value={formData.full_name}
               onChange={handleChange}
               className="border p-2 rounded"
             />
-
             <input
               type="email"
               name="email"
@@ -56,8 +113,8 @@ function JobSeekerProfile() {
               value={formData.email}
               onChange={handleChange}
               className="border p-2 rounded"
+              disabled
             />
-
             <input
               type="text"
               name="address"
@@ -66,7 +123,6 @@ function JobSeekerProfile() {
               onChange={handleChange}
               className="border p-2 rounded"
             />
-
             <input
               type="text"
               name="mobile"
@@ -75,7 +131,6 @@ function JobSeekerProfile() {
               onChange={handleChange}
               className="border p-2 rounded"
             />
-
             <select
               name="gender"
               value={formData.gender}
@@ -93,11 +148,10 @@ function JobSeekerProfile() {
         {/* Education */}
         <section>
           <h3 className="text-lg font-semibold mb-3">Education</h3>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <select
-              name="educationLevel"
-              value={formData.educationLevel}
+              name="education_level"
+              value={formData.education_level}
               onChange={handleChange}
               className="border p-2 rounded"
             >
@@ -107,7 +161,6 @@ function JobSeekerProfile() {
               <option value="graduate">Graduate</option>
               <option value="masters">Masters</option>
             </select>
-
             <input
               type="text"
               name="degree"
@@ -116,7 +169,6 @@ function JobSeekerProfile() {
               onChange={handleChange}
               className="border p-2 rounded"
             />
-
             <input
               type="text"
               name="university"
@@ -131,20 +183,18 @@ function JobSeekerProfile() {
         {/* Job Preferences */}
         <section>
           <h3 className="text-lg font-semibold mb-3">Job Preferences</h3>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
-              name="preferredIndustry"
+              name="preferred_industry"
               placeholder="Preferred Industry"
-              value={formData.preferredIndustry}
+              value={formData.preferred_industry}
               onChange={handleChange}
               className="border p-2 rounded"
             />
-
             <select
-              name="jobLevel"
-              value={formData.jobLevel}
+              name="job_level"
+              value={formData.job_level}
               onChange={handleChange}
               className="border p-2 rounded"
             >
@@ -160,7 +210,6 @@ function JobSeekerProfile() {
         {/* CV Upload */}
         <section>
           <h3 className="text-lg font-semibold mb-3">Upload CV</h3>
-
           <input
             type="file"
             name="cv"
