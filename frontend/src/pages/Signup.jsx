@@ -15,7 +15,7 @@ function Signup() {
   const [companyName, setCompanyName] = useState(""); // employer only
   const [error, setError] = useState("");
 
-  const API_URL = "http://127.0.0.1:8000/api/accounts/register/";
+  const API_URL = "http://127.0.0.1:8000/api/register/";
 
   const handleSignup = async (e) => {
     e.preventDefault();
