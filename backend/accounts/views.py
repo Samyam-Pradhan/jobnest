@@ -1,13 +1,16 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from .serializers import RegisterSerializer, LoginSerializer, JobSeekerProfileSerializer
-from .models import JobSeekerProfile
 from rest_framework_simplejwt.tokens import RefreshToken
+from .serializers import (
+    RegisterSerializer,
+    LoginSerializer,
+    JobSeekerProfileSerializer,
+    EmployerProfileSerializer
+)
+from .models import JobSeekerProfile, EmployerProfile
 
 User = get_user_model()
-
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
@@ -30,7 +33,6 @@ class RegisterView(generics.CreateAPIView):
             "refresh": str(refresh),
             "access": str(refresh.access_token),
         }, status=status.HTTP_201_CREATED)
-
 
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
@@ -60,44 +62,52 @@ class LoginView(generics.GenericAPIView):
 
         return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
-
 class JobSeekerProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = JobSeekerProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
-        """
-        Return the logged-in user's jobseeker profile.
-        Create it if it does not exist.
-        """
         if self.request.user.role != "job_seeker":
             return None
-
-        profile, created = JobSeekerProfile.objects.get_or_create(
-            user=self.request.user
-        )
+        profile, created = JobSeekerProfile.objects.get_or_create(user=self.request.user)
         return profile
 
     def get(self, request, *args, **kwargs):
         if request.user.role != "job_seeker":
-            return Response(
-                {"detail": "Only job seekers can access this profile."},
-                status=status.HTTP_403_FORBIDDEN
-            )
+            return Response({"detail": "Only job seekers can access this profile."}, status=status.HTTP_403_FORBIDDEN)
         return super().get(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
         if request.user.role != "job_seeker":
-            return Response(
-                {"detail": "Only job seekers can update this profile."},
-                status=status.HTTP_403_FORBIDDEN
-            )
+            return Response({"detail": "Only job seekers can update this profile."}, status=status.HTTP_403_FORBIDDEN)
         return super().put(request, *args, **kwargs)
 
     def patch(self, request, *args, **kwargs):
         if request.user.role != "job_seeker":
-            return Response(
-                {"detail": "Only job seekers can update this profile."},
-                status=status.HTTP_403_FORBIDDEN
-            )
+            return Response({"detail": "Only job seekers can update this profile."}, status=status.HTTP_403_FORBIDDEN)
+        return super().patch(request, *args, **kwargs)
+
+class EmployerProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = EmployerProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        if self.request.user.role != "employer":
+            return None
+        profile, created = EmployerProfile.objects.get_or_create(user=self.request.user)
+        return profile
+
+    def get(self, request, *args, **kwargs):
+        if request.user.role != "employer":
+            return Response({"detail": "Only employers can access this profile."}, status=status.HTTP_403_FORBIDDEN)
+        return super().get(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        if request.user.role != "employer":
+            return Response({"detail": "Only employers can update this profile."}, status=status.HTTP_403_FORBIDDEN)
+        return super().put(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        if request.user.role != "employer":
+            return Response({"detail": "Only employers can update this profile."}, status=status.HTTP_403_FORBIDDEN)
         return super().patch(request, *args, **kwargs)

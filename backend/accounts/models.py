@@ -22,8 +22,6 @@ class User(AbstractUser):
             return f"{self.company_name} (Employer)"
         return f"{self.username} ({self.role})"
 
-
-# JobSeeker profile model
 class JobSeekerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100, blank=True)
@@ -40,3 +38,18 @@ class JobSeekerProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+class EmployerProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    company_name = models.CharField(max_length=255, blank=True)
+    contact_email = models.EmailField(blank=True)  # <-- HR / company email
+    address = models.CharField(max_length=255, blank=True)
+    website = models.URLField(blank=True)
+    industry = models.CharField(max_length=100, blank=True)
+    company_size = models.CharField(max_length=50, blank=True)
+    description = models.TextField(blank=True)
+    logo = models.ImageField(upload_to="logos/", blank=True)
+
+    def __str__(self):
+        return self.company_name or f"{self.user.username} (Employer)"
+

@@ -1,11 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-from .models import JobSeekerProfile
+from .models import JobSeekerProfile, EmployerProfile
 
 User = get_user_model()
-
-# User Registration Serializer
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -60,15 +58,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
         return user
 
-
-# User Login Serializer
-
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
-
-
-# JobSeeker Profile Serializer
 
 class JobSeekerProfileSerializer(serializers.ModelSerializer):
     # Optional: include some user fields inside the profile
@@ -85,3 +77,30 @@ class JobSeekerProfileSerializer(serializers.ModelSerializer):
             'preferred_industry', 'job_level', 'cv'
         ]
         read_only_fields = ['user', 'first_name', 'last_name', 'email']
+
+from rest_framework import serializers
+from .models import EmployerProfile
+
+class EmployerProfileSerializer(serializers.ModelSerializer):
+    # Include company_name from related User if profile.company_name is empty
+    company_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = EmployerProfile
+        fields = [
+            "user",
+            "company_name",      # displayed in form
+            "contact_email",
+            "address",
+            "website",
+            "industry",
+            "company_size",
+            "description",
+            "logo",
+        ]
+        read_only_fields = ["user"]
+
+    def get_company_name(self, obj):
+        # Use profile.company_name if exists, otherwise fallback to user.company_name
+        return obj.company_name or obj.user.company_name
+
