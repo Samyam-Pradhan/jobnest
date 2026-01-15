@@ -9,7 +9,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 User = get_user_model()
 
 
-# --- Registration View ---
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
@@ -33,7 +32,6 @@ class RegisterView(generics.CreateAPIView):
         }, status=status.HTTP_201_CREATED)
 
 
-# --- Login View ---
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
 
@@ -63,36 +61,43 @@ class LoginView(generics.GenericAPIView):
         return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-# --- JobSeeker Profile View ---
 class JobSeekerProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = JobSeekerProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
 
     def get_object(self):
-        # Get or create the profile for the logged-in user
-        profile, _ = JobSeekerProfile.objects.get_or_create(user=self.request.user)
+        """
+        Return the logged-in user's jobseeker profile.
+        Create it if it does not exist.
+        """
+        if self.request.user.role != "job_seeker":
+            return None
+
+        profile, created = JobSeekerProfile.objects.get_or_create(
+            user=self.request.user
+        )
         return profile
 
-    def _check_role(self, user):
-        if user.role != 'job_seeker':
-            return Response({"detail": "Only job seekers can access this."}, status=status.HTTP_403_FORBIDDEN)
-        return None
-
     def get(self, request, *args, **kwargs):
-        role_error = self._check_role(request.user)
-        if role_error:
-            return role_error
+        if request.user.role != "job_seeker":
+            return Response(
+                {"detail": "Only job seekers can access this profile."},
+                status=status.HTTP_403_FORBIDDEN
+            )
         return super().get(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
-        role_error = self._check_role(request.user)
-        if role_error:
-            return role_error
+        if request.user.role != "job_seeker":
+            return Response(
+                {"detail": "Only job seekers can update this profile."},
+                status=status.HTTP_403_FORBIDDEN
+            )
         return super().put(request, *args, **kwargs)
 
     def patch(self, request, *args, **kwargs):
-        role_error = self._check_role(request.user)
-        if role_error:
-            return role_error
+        if request.user.role != "job_seeker":
+            return Response(
+                {"detail": "Only job seekers can update this profile."},
+                status=status.HTTP_403_FORBIDDEN
+            )
         return super().patch(request, *args, **kwargs)
