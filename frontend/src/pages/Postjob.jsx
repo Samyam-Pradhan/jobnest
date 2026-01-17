@@ -52,35 +52,108 @@ function PostJob() {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white p-6 rounded-xl shadow-md">
-      <h2 className="text-xl font-semibold mb-4 text-indigo-600">Post a New Job</h2>
+    <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+      <h2 className="text-2xl font-bold text-indigo-600 mb-6">Post a New Job</h2>
 
       {message && (
-        <p className={`mb-4 ${message.includes("success") ? "text-green-600" : "text-red-600"}`}>
+        <p className={`mb-4 font-medium ${message.includes("success") ? "text-green-600" : "text-red-600"}`}>
           {message}
         </p>
       )}
 
-      <form className="grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
-        <input type="text" name="title" placeholder="Job Title" value={formData.title} onChange={handleChange} className="border p-2 rounded" required />
-        <textarea name="description" placeholder="Job Description" value={formData.description} onChange={handleChange} className="border p-2 rounded" rows={5} required />
-        <textarea name="responsibilities" placeholder="Responsibilities" value={formData.responsibilities} onChange={handleChange} className="border p-2 rounded" rows={5} required />
-        <input type="text" name="location" placeholder="Location" value={formData.location} onChange={handleChange} className="border p-2 rounded" required />
-        <select name="job_level" value={formData.job_level} onChange={handleChange} className="border p-2 rounded" required>
-          <option value="">Select Job Level</option>
-          <option value="intern">Intern</option>
-          <option value="entry">Entry Level</option>
-          <option value="mid">Mid Level</option>
-          <option value="senior">Senior Level</option>
-        </select>
-        <input type="text" name="experience" placeholder="Required Experience" value={formData.experience} onChange={handleChange} className="border p-2 rounded" required />
-        <select name="work_type" value={formData.work_type} onChange={handleChange} className="border p-2 rounded" required>
-          <option value="">Select Work Type</option>
-          <option value="onsite">Onsite</option>
-          <option value="remote">Remote</option>
-          <option value="hybrid">Hybrid</option>
-        </select>
-        <button type="submit" disabled={loading} className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Job Details */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-gray-700">Job Details</h3>
+          <input
+            type="text"
+            name="title"
+            placeholder="Job Title"
+            value={formData.title}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            required
+          />
+          <textarea
+            name="description"
+            placeholder="Job Description"
+            value={formData.description}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            rows={4}
+            required
+          />
+          <textarea
+            name="responsibilities"
+            placeholder="Responsibilities"
+            value={formData.responsibilities}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            rows={4}
+            required
+          />
+        </div>
+
+        {/* Location & Level */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-gray-700">Requirements</h3>
+          <input
+            type="text"
+            name="location"
+            placeholder="Location"
+            value={formData.location}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            required
+          />
+          <select
+            name="job_level"
+            value={formData.job_level}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            required
+          >
+            <option value="">Select Job Level</option>
+            <option value="intern">Intern</option>
+            <option value="entry">Entry Level</option>
+            <option value="mid">Mid Level</option>
+            <option value="senior">Senior Level</option>
+          </select>
+          <input
+            type="text"
+            name="experience"
+            placeholder="Required Experience"
+            value={formData.experience}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            required
+          />
+        </div>
+
+        {/* Work Type */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-gray-700">Work Information</h3>
+          <select
+            name="work_type"
+            value={formData.work_type}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            required
+          >
+            <option value="">Select Work Type</option>
+            <option value="onsite">Onsite</option>
+            <option value="remote">Remote</option>
+            <option value="hybrid">Hybrid</option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className={`w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
           {loading ? "Posting..." : "Post Job"}
         </button>
       </form>

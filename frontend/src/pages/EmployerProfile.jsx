@@ -30,9 +30,9 @@ function EmployerProfile() {
         const res = await api.get("");
         setFormData({
           ...res.data,
-          logo: null, // reset file input
+          logo: null,
         });
-        if (res.data.logo) setLogoPreview(res.data.logo); // already full URL from backend
+        if (res.data.logo) setLogoPreview(res.data.logo);
       } catch (err) {
         console.error(err);
         setMessage(err.response?.data?.detail || "Failed to load profile.");
@@ -71,28 +71,34 @@ function EmployerProfile() {
     }
   };
 
-  if (loading) return <p>Loading profile...</p>;
+  if (loading) return <p className="text-center text-gray-500 mt-8">Loading profile...</p>;
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow">
-      <h2 className="text-2xl font-bold mb-6">Company Profile</h2>
-      {message && <p className="mb-4 text-green-600">{message}</p>}
+    <div className="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-lg space-y-6">
+      <h2 className="text-3xl font-bold text-indigo-600">Company Profile</h2>
+
+      {message && (
+        <p className={`text-center font-medium ${message.includes("success") ? "text-green-600" : "text-red-600"}`}>
+          {message}
+        </p>
+      )}
 
       <form
         onSubmit={handleSubmit}
         encType="multipart/form-data"
-        className="space-y-6"
+        className="space-y-8"
       >
-        <section>
-          <h3 className="text-lg font-semibold mb-3">Company Information</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Company Info */}
+        <section className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-700 border-b pb-2">Company Information</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <input
               type="text"
               name="company_name"
               placeholder="Company Name"
               value={formData.company_name}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
               required
             />
             <input
@@ -101,7 +107,7 @@ function EmployerProfile() {
               placeholder="HR / Company Email"
               value={formData.contact_email}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             />
             <input
               type="text"
@@ -109,7 +115,7 @@ function EmployerProfile() {
               placeholder="Address"
               value={formData.address}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             />
             <input
               type="text"
@@ -117,7 +123,7 @@ function EmployerProfile() {
               placeholder="Website URL"
               value={formData.website}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             />
             <input
               type="text"
@@ -125,13 +131,13 @@ function EmployerProfile() {
               placeholder="Industry"
               value={formData.industry}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             />
             <select
               name="company_size"
               value={formData.company_size}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             >
               <option value="">Company Size</option>
               <option value="small">1-50</option>
@@ -142,39 +148,43 @@ function EmployerProfile() {
           </div>
         </section>
 
-        <section>
-          <h3 className="text-lg font-semibold mb-3">About Company</h3>
+        {/* About Company */}
+        <section className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-700 border-b pb-2">About Company</h3>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
             placeholder="Brief description of your company"
-            className="border p-2 rounded w-full"
+            className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             rows={5}
           />
         </section>
 
-        <section>
-          <h3 className="text-lg font-semibold mb-3">Upload Company Logo</h3>
-          {logoPreview && (
-            <img
-              src={logoPreview}
-              alt="Company Logo"
-              className="mb-2 w-32 h-32 object-cover border rounded"
+        {/* Company Logo */}
+        <section className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-700 border-b pb-2">Upload Company Logo</h3>
+          <div className="flex items-center space-x-4">
+            {logoPreview && (
+              <img
+                src={logoPreview}
+                alt="Company Logo"
+                className="w-28 h-28 object-cover rounded-full border"
+              />
+            )}
+            <input
+              type="file"
+              name="logo"
+              accept="image/*"
+              onChange={handleChange}
+              className="border p-2 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             />
-          )}
-          <input
-            type="file"
-            name="logo"
-            accept="image/*"
-            onChange={handleChange}
-            className="border p-2 rounded w-full"
-          />
+          </div>
         </section>
 
         <button
           type="submit"
-          className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition"
+          className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
         >
           Save Profile
         </button>
