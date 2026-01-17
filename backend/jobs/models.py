@@ -16,7 +16,9 @@ class Job(models.Model):
     )
 
     employer = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="jobs"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="jobs"
     )
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -28,6 +30,6 @@ class Job(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        # Get company name from EmployerProfile
-        company_name = getattr(getattr(self.employer, 'employerprofile', None), 'company_name', None)
-        return f"{self.title} - {company_name or self.employer.username}"
+        profile = getattr(self.employer, "employerprofile", None)
+        company = profile.company_name if profile else self.employer.username
+        return f"{self.title} - {company}"

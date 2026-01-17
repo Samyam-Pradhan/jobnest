@@ -7,13 +7,29 @@ class EmployerJobCreateView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        # Save the logged-in user as the employer
         serializer.save(employer=self.request.user)
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
 
 class EmployerJobListView(generics.ListAPIView):
     serializer_class = JobSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # Return only jobs posted by the logged-in employer
-        return Job.objects.filter(employer=self.request.user).order_by('-created_at')
+        return Job.objects.filter(employer=self.request.user).order_by("-created_at")
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
+
+class JobSeekerJobListView(generics.ListAPIView):
+    serializer_class = JobSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Job.objects.all().order_by("-created_at")
+
+    def get_serializer_context(self):
+        return {"request": self.request}
