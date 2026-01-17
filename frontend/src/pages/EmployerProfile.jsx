@@ -24,15 +24,15 @@ function EmployerProfile() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  // Fetch profile
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await api.get("");
-        setFormData({ ...res.data, logo: null }); // reset file input
-        if (res.data.logo) {
-          setLogoPreview(res.data.logo); // now full URL from backend
-        }
+        setFormData({
+          ...res.data,
+          logo: null, // reset file input
+        });
+        if (res.data.logo) setLogoPreview(res.data.logo); // already full URL from backend
       } catch (err) {
         console.error(err);
         setMessage(err.response?.data?.detail || "Failed to load profile.");
@@ -43,18 +43,16 @@ function EmployerProfile() {
     fetchProfile();
   }, []);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (files) {
       setFormData({ ...formData, [name]: files[0] });
-      setLogoPreview(URL.createObjectURL(files[0])); // preview uploaded image
+      setLogoPreview(URL.createObjectURL(files[0]));
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  // Submit updated profile
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -63,11 +61,10 @@ function EmployerProfile() {
     }
 
     try {
-      const res = await api.patch("", data, {
+      await api.patch("", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setMessage("Profile updated successfully!");
-      if (res.data.logo) setLogoPreview(res.data.logo); // show saved logo from backend
     } catch (err) {
       console.error(err);
       setMessage(err.response?.data || "Failed to update profile.");
@@ -81,7 +78,11 @@ function EmployerProfile() {
       <h2 className="text-2xl font-bold mb-6">Company Profile</h2>
       {message && <p className="mb-4 text-green-600">{message}</p>}
 
-      <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+        className="space-y-6"
+      >
         <section>
           <h3 className="text-lg font-semibold mb-3">Company Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -92,6 +93,7 @@ function EmployerProfile() {
               value={formData.company_name}
               onChange={handleChange}
               className="border p-2 rounded"
+              required
             />
             <input
               type="email"

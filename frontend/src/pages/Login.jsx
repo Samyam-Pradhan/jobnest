@@ -6,7 +6,6 @@ import Footer from "../components/Footer";
 
 function Login() {
   const navigate = useNavigate();
-  const role = localStorage.getItem("role");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,12 +18,10 @@ function Login() {
 
     try {
       const res = await axios.post(API_URL, { email, password });
-      // save tokens
       localStorage.setItem("access_token", res.data.access);
       localStorage.setItem("refresh_token", res.data.refresh);
       localStorage.setItem("user_role", res.data.user.role);
 
-      // redirect by role
       if (res.data.user.role === "job_seeker") navigate("/jobseeker-dashboard");
       else navigate("/employer-dashboard");
     } catch (err) {
@@ -38,11 +35,10 @@ function Login() {
   return (
     <>
       <Navbar />
-
-      <div className="flex flex-col items-center justify-center min-h-screen bg-white-100">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
         <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
           <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
-            Login as {role}
+            Login
           </h2>
           <form onSubmit={handleLogin} className="flex flex-col space-y-4">
             <input
@@ -81,7 +77,6 @@ function Login() {
           </p>
         </div>
       </div>
-
       <Footer />
     </>
   );

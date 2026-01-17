@@ -1,15 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import PostJob from "./Postjob";
+import PostJob from "./PostJob";
 import EmployerProfile from "./EmployerProfile";
-import MyJobs from "./Myjobs";
+import MyJobs from "./MyJobs";
+import axios from "axios";
 
 function EmployerDashboard() {
   const [activeSection, setActiveSection] = useState("dashboard");
+  const [companyName, setCompanyName] = useState("");
+  const [email, setEmail] = useState("");
 
-  const companyName = localStorage.getItem("company_name");
-  const email = localStorage.getItem("email");
+  const token = localStorage.getItem("access_token");
+  const api = axios.create({
+    baseURL: "http://127.0.0.1:8000/api/profile/employer/",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await api.get("");
+        setCompanyName(res.data.company_name || "Employer");
+        setEmail(res.data.contact_email || "");
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -26,60 +45,25 @@ function EmployerDashboard() {
           <h2 className="text-2xl font-bold text-indigo-600 mb-6">Dashboard</h2>
 
           {/* Sidebar Buttons */}
-          <button
-            onClick={() => setActiveSection("dashboard")}
-            className={`w-full px-4 py-2 mb-2 rounded-lg transition-colors ${
-              activeSection === "dashboard"
-                ? "bg-indigo-100 text-indigo-700 font-semibold"
-                : "hover:bg-gray-100 text-gray-700"
-            }`}
-          >
-            Overview
-          </button>
-
-          <button
-            onClick={() => setActiveSection("profile")}
-            className={`w-full px-4 py-2 mb-2 rounded-lg transition-colors ${
-              activeSection === "profile"
-                ? "bg-indigo-100 text-indigo-700 font-semibold"
-                : "hover:bg-gray-100 text-gray-700"
-            }`}
-          >
-            Profile
-          </button>
-
-          <button
-            onClick={() => setActiveSection("postJob")}
-            className={`w-full px-4 py-2 mb-2 rounded-lg transition-colors ${
-              activeSection === "postJob"
-                ? "bg-indigo-100 text-indigo-700 font-semibold"
-                : "hover:bg-gray-100 text-gray-700"
-            }`}
-          >
-            Post Job
-          </button>
-
-          <button
-            onClick={() => setActiveSection("myJobs")}
-            className={`w-full px-4 py-2 mb-2 rounded-lg transition-colors ${
-              activeSection === "myJobs"
-                ? "bg-indigo-100 text-indigo-700 font-semibold"
-                : "hover:bg-gray-100 text-gray-700"
-            }`}
-          >
-            My Jobs
-          </button>
-
-          <button
-            onClick={() => setActiveSection("applications")}
-            className={`w-full px-4 py-2 mb-2 rounded-lg transition-colors ${
-              activeSection === "applications"
-                ? "bg-indigo-100 text-indigo-700 font-semibold"
-                : "hover:bg-gray-100 text-gray-700"
-            }`}
-          >
-            Applications
-          </button>
+          {[
+            ["dashboard", "Overview"],
+            ["profile", "Profile"],
+            ["postJob", "Post Job"],
+            ["myJobs", "My Jobs"],
+            ["applications", "Applications"],
+          ].map(([section, label]) => (
+            <button
+              key={section}
+              onClick={() => setActiveSection(section)}
+              className={`w-full px-4 py-2 mb-2 rounded-lg transition-colors ${
+                activeSection === section
+                  ? "bg-indigo-100 text-indigo-700 font-semibold"
+                  : "hover:bg-gray-100 text-gray-700"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
 
           <button
             onClick={handleLogout}
@@ -92,28 +76,20 @@ function EmployerDashboard() {
         {/* Main Content */}
         <main className="flex-1 space-y-6">
           {activeSection === "dashboard" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-                <h1 className="text-2xl font-bold text-indigo-600 mb-2">
-                  Welcome, {companyName || "Employer"}
-                </h1>
-                <p className="text-gray-600 mb-4">{email}</p>
-                <p className="text-gray-700">
-                  You can post new jobs, manage existing ones, and track applications.
-                </p>
-              </div>
+            <div className="bg-white p-6 rounded-xl shadow">
+              <h1 className="text-2xl font-bold text-indigo-600 mb-2">
+                Welcome, {companyName}
+              </h1>
+              <p className="text-gray-600 mb-4">{email}</p>
+              <p className="text-gray-700">
+                You can post new jobs, manage existing ones, and track applications.
+              </p>
             </div>
           )}
 
           {activeSection === "profile" && <EmployerProfile />}
-
           {activeSection === "postJob" && <PostJob />}
-
           {activeSection === "myJobs" && <MyJobs />}
-
-
-          
-
           {activeSection === "applications" && (
             <div className="bg-white p-6 rounded-xl shadow">
               <h2 className="text-xl font-semibold mb-4">Applications</h2>
