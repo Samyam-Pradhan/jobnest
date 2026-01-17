@@ -149,10 +149,16 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'accounts.User'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 AUTH_USER_MODEL = 'accounts.User' #tells django use my own custom user model 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField' #user BIGINT instead of INT
+
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -82,14 +82,14 @@ from rest_framework import serializers
 from .models import EmployerProfile
 
 class EmployerProfileSerializer(serializers.ModelSerializer):
-    # Include company_name from related User if profile.company_name is empty
+    logo = serializers.ImageField(read_only=True)
     company_name = serializers.SerializerMethodField()
 
     class Meta:
         model = EmployerProfile
         fields = [
             "user",
-            "company_name",      # displayed in form
+            "company_name",
             "contact_email",
             "address",
             "website",
@@ -101,6 +101,12 @@ class EmployerProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ["user"]
 
     def get_company_name(self, obj):
-        # Use profile.company_name if exists, otherwise fallback to user.company_name
         return obj.company_name or obj.user.company_name
 
+    def to_representation(self, instance):
+        """Include full URL for logo"""
+        rep = super().to_representation(instance)
+        request = self.context.get("request")
+        if instance.logo and request:
+            rep["logo"] = request.build_absolute_uri(instance.logo.url)
+        return rep

@@ -87,6 +87,7 @@ class JobSeekerProfileView(generics.RetrieveUpdateAPIView):
             return Response({"detail": "Only job seekers can update this profile."}, status=status.HTTP_403_FORBIDDEN)
         return super().patch(request, *args, **kwargs)
 
+
 class EmployerProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = EmployerProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -97,17 +98,7 @@ class EmployerProfileView(generics.RetrieveUpdateAPIView):
         profile, created = EmployerProfile.objects.get_or_create(user=self.request.user)
         return profile
 
-    def get(self, request, *args, **kwargs):
-        if request.user.role != "employer":
-            return Response({"detail": "Only employers can access this profile."}, status=status.HTTP_403_FORBIDDEN)
-        return super().get(request, *args, **kwargs)
-
-    def put(self, request, *args, **kwargs):
-        if request.user.role != "employer":
-            return Response({"detail": "Only employers can update this profile."}, status=status.HTTP_403_FORBIDDEN)
-        return super().put(request, *args, **kwargs)
-
-    def patch(self, request, *args, **kwargs):
-        if request.user.role != "employer":
-            return Response({"detail": "Only employers can update this profile."}, status=status.HTTP_403_FORBIDDEN)
-        return super().patch(request, *args, **kwargs)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request  # required for full image URL
+        return context
