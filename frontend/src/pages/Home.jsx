@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import jobImage from "../assets/home.jpg";
 import jobIcon from "../assets/jobseeker.png";
 import employerIcon from "../assets/employer.png";
 import Navbar from "../components/Navbar";
@@ -19,56 +18,109 @@ function Home() {
       <Navbar />
 
       {/* Main Container */}
-      <div className="min-h-screen flex bg-white">
-        
-        {/* Left Section (Image) */}
-        <div className="hidden md:flex w-1/2 items-center justify-center px-16">
-          <img
-            src={jobImage}
-            alt="Job illustration"
-            className="w-[90%] max-w-none max-h-[85vh] object-contain"
-          />
-        </div>
+      <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        <div className="max-w-7xl mx-auto w-full px-6 py-16 flex flex-col gap-16">
 
-        {/* Right Section (Role Selection) */}
-        <div className="w-full md:w-1/2 flex items-center justify-center px-16">
-          <div className="container max-w-2xl w-full">
-            <h1 className="text-3xl font-bold mb-6 text-center">
-              Select Your Role
+          {/* Hero Section */}
+          <div className="flex flex-col items-center text-center gap-6 max-w-3xl mx-auto">
+            <div className="inline-block">
+              <span className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
+                Welcome to JobNest
+              </span>
+            </div>
+            
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
+              Your Next<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                Career Move
+              </span><br />
+              Starts Here
             </h1>
-
-            <p className="text-gray-600 mb-8 text-center">
-              Choose how you want to continue
+            
+            <p className="text-gray-600 text-lg leading-relaxed">
+              Connect with opportunities that match your ambitions. Whether you're seeking talent or your dream role, JobNest makes it effortless.
             </p>
+          </div>
 
-            <div className="flex flex-col sm:flex-row gap-6">
-              {/* Job Seeker */}
+          {/* Role Selection Section */}
+          <div className="flex flex-col items-center gap-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                Choose Your Path
+              </h2>
+              <p className="text-gray-600">
+                Select your role to get started
+              </p>
+            </div>
+
+            <div className="w-full max-w-4xl flex flex-col sm:flex-row gap-6">
+              {/* Job Seeker Card */}
               <div
                 onClick={() => handleRole("jobseeker")}
-                className="flex-1 flex flex-col items-center justify-center p-6 bg-blue-100 rounded-lg cursor-pointer hover:bg-blue-200 transition"
+                className="flex-1 group cursor-pointer"
               >
-                <img src={jobIcon} alt="Job Seeker" className="w-20 mb-4" />
-                <span className="text-xl font-semibold text-blue-700">
-                  Job Seeker
-                </span>
+                <div className="relative h-full p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-blue-300 overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100 rounded-full -mr-16 -mt-16 opacity-50 group-hover:scale-150 transition-transform duration-500"></div>
+                  
+                  <div className="relative flex flex-col items-center text-center gap-4">
+                    <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <img src={jobIcon} alt="Job Seeker" className="w-16" />
+                    </div>
+                    
+                    <h3 className="text-2xl font-bold text-gray-900">
+                      Job Seeker
+                    </h3>
+                    
+                    <p className="text-gray-600 text-sm">
+                      Find your dream job and advance your career
+                    </p>
+                    
+                    <div className="mt-2 text-blue-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+                      Get Started
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Employer */}
+              {/* Employer Card */}
               <div
                 onClick={() => handleRole("employer")}
-                className="flex-1 flex flex-col items-center justify-center p-6 bg-green-100 rounded-lg cursor-pointer hover:bg-green-200 transition"
+                className="flex-1 group cursor-pointer"
               >
-                <img src={employerIcon} alt="Employer" className="w-20 mb-4" />
-                <span className="text-xl font-semibold text-green-700">
-                  Employer
-                </span>
+                <div className="relative h-full p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-green-300 overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-green-100 rounded-full -mr-16 -mt-16 opacity-50 group-hover:scale-150 transition-transform duration-500"></div>
+                  
+                  <div className="relative flex flex-col items-center text-center gap-4">
+                    <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <img src={employerIcon} alt="Employer" className="w-16" />
+                    </div>
+                    
+                    <h3 className="text-2xl font-bold text-gray-900">
+                      Employer
+                    </h3>
+                    
+                    <p className="text-gray-600 text-sm">
+                      Discover top talent for your organization
+                    </p>
+                    
+                    <div className="mt-2 text-green-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+                      Get Started
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
-      {/* Footer directly attached */}
       <Footer />
     </>
   );

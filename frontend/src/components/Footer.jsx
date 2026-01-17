@@ -3,17 +3,11 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="bg-gray-600 text-white mt-10">
-      {/* Top Section */}
+    <footer className="bg-gray-600 text-white">
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
-
-        {/* Logo Section */}
+        {/* Logo */}
         <div className="flex justify-center md:justify-start">
-          <img
-            src="/JN.png"
-            alt="JobNest Logo"
-            className="h-50 w-auto"
-          />
+          <img src="/JN.png" alt="JobNest Logo" className="h-40 w-auto" />
         </div>
 
         {/* Site Map */}
@@ -40,24 +34,14 @@ function Footer() {
         <div>
           <h3 className="text-lg font-semibold mb-4">Socials</h3>
           <ul className="space-y-2">
-            <li>
-              <a href="#" className="hover:underline">Facebook</a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">LinkedIn</a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">Twitter</a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">Instagram</a>
-            </li>
+            <li><a href="#" className="hover:underline">Facebook</a></li>
+            <li><a href="#" className="hover:underline">LinkedIn</a></li>
+            <li><a href="#" className="hover:underline">Twitter</a></li>
+            <li><a href="#" className="hover:underline">Instagram</a></li>
           </ul>
         </div>
-
       </div>
 
-      {/* Bottom Section */}
       <div className="border-t border-gray-500 text-center py-4 text-sm">
         © 2026 JobNest. All rights reserved.
       </div>

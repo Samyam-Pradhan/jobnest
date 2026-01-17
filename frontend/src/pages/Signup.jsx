@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import loginImage from "../assets/login.jpg"; // replace with correct path
 
 function Signup() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function Signup() {
     e.preventDefault();
     setError("");
 
-    // Prepare payload for backend
+    // Prepare payload
     let data = {
       email,
       password,
@@ -36,13 +37,10 @@ function Signup() {
 
     try {
       const res = await axios.post(API_URL, data);
-
-      // Save JWT tokens in localStorage
       localStorage.setItem("access_token", res.data.access);
       localStorage.setItem("refresh_token", res.data.refresh);
       localStorage.setItem("user_role", res.data.user.role);
 
-      // Redirect to respective dashboard
       if (res.data.user.role === "job_seeker") navigate("/jobseeker-dashboard");
       else navigate("/employer-dashboard");
     } catch (err) {
@@ -62,66 +60,84 @@ function Signup() {
   return (
     <>
       <Navbar />
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-            Signup as <span className="text-indigo-600">{role}</span>
-          </h2>
-          <form onSubmit={handleSignup} className="space-y-5">
-            {role === "jobseeker" && (
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-              />
-            )}
+      <div className="flex flex-col min-h-screen bg-white">
+        <div className="flex flex-col md:flex-row flex-1 items-center justify-center">
 
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={password2}
-              onChange={(e) => setPassword2(e.target.value)}
-              required
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
+          {/* Left: Signup Form */}
+          <div className="w-full md:w-1/2 flex items-center justify-center p-8">
+            <div className="bg-white shadow-lg rounded-3xl p-10 w-full max-w-md">
+              <h2 className="text-3xl font-bold text-center text-indigo-600 mb-6">
+                Signup as <span className="capitalize">{role}</span>
+              </h2>
 
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+              <form onSubmit={handleSignup} className="flex flex-col space-y-4">
+                {role === "jobseeker" && (
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className="border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                  />
+                )}
 
-            <button
-              type="submit"
-              className="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition"
-            >
-              Signup
-            </button>
-          </form>
-          <p className="text-sm text-gray-500 text-center mt-4">
-            Already have an account?{" "}
-            <button
-              onClick={handleLogin}
-              className="text-blue-600 hover:underline font-medium"
-            >
-              Login
-            </button>
-          </p>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                />
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={password2}
+                  onChange={(e) => setPassword2(e.target.value)}
+                  required
+                  className="border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                />
+
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+
+                <button
+                  type="submit"
+                  className="bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition"
+                >
+                  Signup
+                </button>
+              </form>
+
+              <p className="text-sm text-gray-500 text-center mt-4">
+                Already have an account?{" "}
+                <button
+                  onClick={handleLogin}
+                  className="text-blue-600 hover:underline font-medium"
+                >
+                  Login
+                </button>
+              </p>
+            </div>
+          </div>
+
+          {/* Right: Image */}
+          <div className="w-full md:w-1/2 flex items-center justify-center p-8">
+            <img
+              src={loginImage}
+              alt="Signup Illustration"
+              className="w-full max-w-lg object-contain"
+            />
+          </div>
+
         </div>
       </div>
       <Footer />
