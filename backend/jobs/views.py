@@ -33,3 +33,11 @@ class JobSeekerJobListView(generics.ListAPIView):
 
     def get_serializer_context(self):
         return {"request": self.request}
+
+class JobDetailView(generics.RetrieveAPIView):
+    serializer_class = JobSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Job.objects.all()
+
+    def get_serializer_context(self):
+        return {"request": self.request}
