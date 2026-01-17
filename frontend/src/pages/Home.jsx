@@ -18,7 +18,7 @@ function Home() {
       <Navbar />
 
       {/* Main Container */}
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <div className="min-h-screen flex flex-col bg-linear-to-br from-blue-50 via-white to-indigo-50">
         <div className="max-w-7xl mx-auto w-full px-6 py-16 flex flex-col gap-16">
 
           {/* Hero Section */}
@@ -31,7 +31,7 @@ function Home() {
             
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
               Your Next<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+              <span className="text-transparent bg-clip-text bg-linear-to-br from-blue-600 to-indigo-600">
                 Career Move
               </span><br />
               Starts Here
