@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import JobSeekerProfile from "./JobSeekerProfile";
+import JobDetails from "./JobDetails";
 
 function JobSeekerDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSection, setActiveSection] = useState("jobs");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("access_token");
   const api = axios.create({
@@ -108,8 +111,8 @@ function JobSeekerDashboard() {
                     <div
                       key={job.id}
                       className="p-5 bg-white rounded-lg shadow hover:shadow-lg transition flex flex-col justify-between cursor-pointer"
-                      onClick={() => console.log("View job details:", job.id)}
-                    >
+                       onClick={() => navigate(`/jobs/${job.id}`)} // <-- updated line
+                        >
                       <div className="flex items-center mb-4">
                         {job.logo ? (
                           <img
