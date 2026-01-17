@@ -9,3 +9,11 @@ class EmployerJobCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         # The logged-in user is the employer
         serializer.save(employer=self.request.user)
+
+class EmployerJobListView(generics.ListAPIView):
+    serializer_class = JobSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Return only jobs posted by the logged-in employer
+        return Job.objects.filter(employer=self.request.user).order_by('-created_at')
