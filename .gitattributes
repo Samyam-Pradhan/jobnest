@@ -1,10 +1,12 @@
+frontend/** linguist-vendored
+frontend/** linguist-generated
+
+static/** linguist-vendored
+dist/** linguist-vendored
+build/** linguist-vendored
+node_modules/** linguist-vendored
+
 *.py linguist-detectable=true
 
-*.js linguist-detectable=false
-
-node_modules/* linguist-vendored
-dist/* linguist-vendored
-build/* linguist-vendored
-
-*.min.js linguist-vendored
-*.min.css linguist-vendored
+*.json linguist-detectable=false
+*.lock linguist-detectable=false
