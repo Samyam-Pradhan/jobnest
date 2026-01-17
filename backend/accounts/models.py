@@ -1,24 +1,18 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-
 class User(AbstractUser):
     ROLE_CHOICES = (
         ('job_seeker', 'Job Seeker'),
         ('employer', 'Employer'),
     )
-
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
 
-    # Only used if role = employer
-    company_name = models.CharField(max_length=255, blank=True, null=True)
-
-    # Optional names (important for employer)
+    # Optional names
     first_name = models.CharField(max_length=150, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)
 
     def __str__(self):
-        # User should ALWAYS represent the account identity
         return self.username
 
 
@@ -42,8 +36,8 @@ class JobSeekerProfile(models.Model):
 
 class EmployerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    company_name = models.CharField(max_length=255, blank=True)
-    contact_email = models.EmailField(blank=True)  # HR / company email
+    company_name = models.CharField(max_length=255)
+    contact_email = models.EmailField(blank=True)
     address = models.CharField(max_length=255, blank=True)
     website = models.URLField(blank=True)
     industry = models.CharField(max_length=100, blank=True)
@@ -52,4 +46,4 @@ class EmployerProfile(models.Model):
     logo = models.ImageField(upload_to="logos/", blank=True)
 
     def __str__(self):
-        return self.company_name or self.user.username
+        return self.company_name
