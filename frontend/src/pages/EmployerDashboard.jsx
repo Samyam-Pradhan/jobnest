@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PostJob from "./Postjob";
 import EmployerProfile from "./EmployerProfile";
+import MyJobs from "./Myjobs";
 
 function EmployerDashboard() {
   const [activeSection, setActiveSection] = useState("dashboard");
@@ -108,12 +109,10 @@ function EmployerDashboard() {
 
           {activeSection === "postJob" && <PostJob />}
 
-          {activeSection === "myJobs" && (
-            <div className="bg-white p-6 rounded-xl shadow">
-              <h2 className="text-xl font-semibold mb-4">My Jobs</h2>
-              <p className="text-gray-600">This section will display all your posted jobs. Coming soon!</p>
-            </div>
-          )}
+          {activeSection === "myJobs" && <MyJobs />}
+
+
+          
 
           {activeSection === "applications" && (
             <div className="bg-white p-6 rounded-xl shadow">
