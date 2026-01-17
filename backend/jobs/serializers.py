@@ -24,13 +24,15 @@ class JobSerializer(serializers.ModelSerializer):
 
     def get_company_name(self, obj):
         profile = getattr(obj.employer, "employerprofile", None)
-        return profile.company_name if profile else obj.employer.username
+        return profile.company_name if profile and profile.company_name else obj.employer.username
 
     def get_company_logo(self, obj):
         request = self.context.get("request")
         profile = getattr(obj.employer, "employerprofile", None)
 
+        # Return full URL if logo exists
         if profile and profile.logo:
             return request.build_absolute_uri(profile.logo.url)
 
+        # Return None if no logo
         return None

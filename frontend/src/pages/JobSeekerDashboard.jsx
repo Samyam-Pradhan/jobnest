@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import JobSeekerProfile from "./JobSeekerProfile";
-import JobDetails from "./JobDetails";
+import { CiUser, CiCircleList, CiSaveDown2, CiCircleCheck, CiLogout } from "react-icons/ci";
 
 function JobSeekerDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -36,44 +36,55 @@ function JobSeekerDashboard() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Optional: Implement search filtering later
     console.log("Search for:", searchQuery);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = "/login";
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
 
-      {/* Middle Section: Sidebar + Main */}
       <div className="flex flex-1 min-h-[calc(100vh-64px)] p-6 gap-6">
         {/* Sidebar */}
         <aside className="w-64 bg-white shadow-md border border-gray-200 p-6 flex flex-col rounded-xl">
           <h2 className="text-2xl font-bold text-indigo-600 mb-6">Dashboard</h2>
+
           <button
             onClick={() => setActiveSection("profile")}
-            className={`w-full px-3 py-2 rounded-lg mb-2 transition-colors ${
-              activeSection === "profile"
-                ? "bg-indigo-100 text-indigo-700 font-semibold"
-                : "hover:bg-gray-100 text-gray-700"
+            className={`w-full px-3 py-2 rounded-lg mb-2 transition-colors flex items-center gap-2 ${
+              activeSection === "profile" ? "bg-indigo-100 text-indigo-700 font-semibold" : "hover:bg-gray-100 text-gray-700"
             }`}
           >
-            Profile
+            <CiUser /> Profile
           </button>
+
           <button
             onClick={() => setActiveSection("jobs")}
-            className={`w-full px-3 py-2 rounded-lg mb-2 transition-colors ${
-              activeSection === "jobs"
-                ? "bg-indigo-100 text-indigo-700 font-semibold"
-                : "hover:bg-gray-100 text-gray-700"
+            className={`w-full px-3 py-2 rounded-lg mb-2 transition-colors flex items-center gap-2 ${
+              activeSection === "jobs" ? "bg-indigo-100 text-indigo-700 font-semibold" : "hover:bg-gray-100 text-gray-700"
             }`}
           >
-            Job Listings
+            <CiCircleList /> Job Listings
           </button>
-          <button className="w-full px-3 py-2 rounded-lg mb-2 hover:bg-gray-100">
-            Saved Jobs
+
+          <button className="w-full px-3 py-2 rounded-lg mb-2 hover:bg-gray-100 flex items-center gap-2">
+            <CiSaveDown2 /> Saved Jobs
           </button>
-          <button className="w-full px-3 py-2 rounded-lg hover:bg-gray-100">
-            Applied Jobs
+
+          <button className="w-full px-3 py-2 rounded-lg mb-2 hover:bg-gray-100 flex items-center gap-2">
+            <CiCircleCheck /> Applied Jobs
+          </button>
+
+          {/* Logout moved up */}
+          <button
+            onClick={handleLogout}
+            className="w-full px-3 py-2 rounded-lg hover:bg-red-100 flex items-center gap-2 text-red-600 font-semibold mt-2"
+          >
+            <CiLogout /> Logout
           </button>
         </aside>
 
@@ -83,7 +94,6 @@ function JobSeekerDashboard() {
             <JobSeekerProfile />
           ) : (
             <>
-              {/* Search Bar */}
               <form
                 onSubmit={handleSearch}
                 className="max-w-xl mx-auto flex border border-gray-300 rounded-lg overflow-hidden mb-8 shadow-sm"
@@ -100,7 +110,6 @@ function JobSeekerDashboard() {
                 </button>
               </form>
 
-              {/* Job Listings */}
               {loading ? (
                 <p>Loading jobs...</p>
               ) : !jobs.length ? (
@@ -110,19 +119,19 @@ function JobSeekerDashboard() {
                   {jobs.map((job) => (
                     <div
                       key={job.id}
-                      className="p-5 bg-white rounded-lg shadow hover:shadow-lg transition flex flex-col justify-between cursor-pointer"
-                       onClick={() => navigate(`/jobs/${job.id}`)} // <-- updated line
-                        >
+                      className="p-5 bg-white rounded-lg shadow flex flex-col justify-between cursor-pointer"
+                      onClick={() => navigate(`/jobs/${job.id}`)}
+                    >
                       <div className="flex items-center mb-4">
-                        {job.logo ? (
+                        {job.company_logo ? (
                           <img
-                            src={job.logo}
+                            src={job.company_logo}
                             alt={job.company_name}
                             className="w-12 h-12 rounded-full mr-3 object-cover"
                           />
                         ) : (
                           <div className="w-12 h-12 bg-gray-300 rounded-full mr-3 flex items-center justify-center text-gray-600">
-                           <img src={job.company_logo} alt={job.company_name} />
+                            {job.company_name?.charAt(0)}
                           </div>
                         )}
                         <div>

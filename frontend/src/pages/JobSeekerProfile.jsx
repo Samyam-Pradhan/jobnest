@@ -19,25 +19,20 @@ function JobSeekerProfile() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
-  // Get JWT from localStorage (stored at login)
   const token = localStorage.getItem("access_token");
 
-  // Axios instance with JWT
   const api = axios.create({
-    baseURL: "http://127.0.0.1:8000/api/profile/", // base API path
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    baseURL: "http://127.0.0.1:8000/api/profile/",
+    headers: { Authorization: `Bearer ${token}` },
   });
 
-  // Fetch existing profile
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await api.get(""); // ✅ fetch from base URL
+        const res = await api.get("");
         setFormData({
           ...res.data,
-          cv: null, // reset file input
+          cv: null,
         });
       } catch (err) {
         console.error(err);
@@ -46,11 +41,9 @@ function JobSeekerProfile() {
         setLoading(false);
       }
     };
-
     fetchProfile();
-  }, []); // empty dependency → run once
+  }, []);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData({
@@ -59,17 +52,14 @@ function JobSeekerProfile() {
     });
   };
 
-  // Submit updated profile
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
-
     for (const key in formData) {
       if (formData[key] !== null) {
         data.append(key, formData[key]);
       }
     }
-
     try {
       await api.patch("", data, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -81,30 +71,41 @@ function JobSeekerProfile() {
     }
   };
 
-  if (loading) return <p>Loading profile...</p>;
+  if (loading)
+    return <p className="text-center text-gray-500 mt-8">Loading profile...</p>;
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow">
-      <h2 className="text-2xl font-bold mb-6">My Profile</h2>
+    <div className="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-lg space-y-6">
+      <h2 className="text-3xl font-bold text-indigo-600">My Profile</h2>
 
-      {message && <p className="mb-4 text-green-600">{message}</p>}
+      {message && (
+        <p
+          className={`text-center font-medium ${
+            message.includes("success") ? "text-green-600" : "text-red-600"
+          }`}
+        >
+          {message}
+        </p>
+      )}
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-6"
+        className="space-y-8"
         encType="multipart/form-data"
       >
-        {/* Personal Info */}
-        <section>
-          <h3 className="text-lg font-semibold mb-3">Personal Information</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Personal Information */}
+        <section className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-700 border-b pb-2">
+            Personal Information
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <input
               type="text"
               name="full_name"
               placeholder="Full Name"
               value={formData.full_name}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             />
             <input
               type="email"
@@ -112,8 +113,8 @@ function JobSeekerProfile() {
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              className="border p-2 rounded"
               disabled
+              className="border p-3 rounded-lg bg-gray-100 w-full cursor-not-allowed"
             />
             <input
               type="text"
@@ -121,7 +122,7 @@ function JobSeekerProfile() {
               placeholder="Address"
               value={formData.address}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             />
             <input
               type="text"
@@ -129,13 +130,13 @@ function JobSeekerProfile() {
               placeholder="Mobile Number"
               value={formData.mobile}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             />
             <select
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
@@ -146,14 +147,16 @@ function JobSeekerProfile() {
         </section>
 
         {/* Education */}
-        <section>
-          <h3 className="text-lg font-semibold mb-3">Education</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <section className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-700 border-b pb-2">
+            Education
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <select
               name="education_level"
               value={formData.education_level}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             >
               <option value="">Education Level</option>
               <option value="highschool">High School</option>
@@ -167,7 +170,7 @@ function JobSeekerProfile() {
               placeholder="Degree"
               value={formData.degree}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             />
             <input
               type="text"
@@ -175,28 +178,30 @@ function JobSeekerProfile() {
               placeholder="University Name"
               value={formData.university}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             />
           </div>
         </section>
 
         {/* Job Preferences */}
-        <section>
-          <h3 className="text-lg font-semibold mb-3">Job Preferences</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <section className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-700 border-b pb-2">
+            Job Preferences
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <input
               type="text"
               name="preferred_industry"
               placeholder="Preferred Industry"
               value={formData.preferred_industry}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             />
             <select
               name="job_level"
               value={formData.job_level}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
             >
               <option value="">Job Level</option>
               <option value="intern">Intern</option>
@@ -208,20 +213,22 @@ function JobSeekerProfile() {
         </section>
 
         {/* CV Upload */}
-        <section>
-          <h3 className="text-lg font-semibold mb-3">Upload CV</h3>
+        <section className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-700 border-b pb-2">
+            Upload CV
+          </h3>
           <input
             type="file"
             name="cv"
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
           />
         </section>
 
-        {/* Submit */}
+        {/* Submit Button */}
         <button
           type="submit"
-          className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition"
+          className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
         >
           Save Profile
         </button>
