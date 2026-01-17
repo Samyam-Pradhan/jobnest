@@ -7,7 +7,7 @@ class EmployerJobCreateView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        # The logged-in user is the employer
+        # Save the logged-in user as the employer
         serializer.save(employer=self.request.user)
 
 class EmployerJobListView(generics.ListAPIView):

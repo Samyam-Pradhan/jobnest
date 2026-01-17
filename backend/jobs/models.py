@@ -28,4 +28,6 @@ class Job(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.title} - {self.employer.company_name or self.employer.username}"
+        # Get company name from EmployerProfile
+        company_name = getattr(getattr(self.employer, 'employerprofile', None), 'company_name', None)
+        return f"{self.title} - {company_name or self.employer.username}"
