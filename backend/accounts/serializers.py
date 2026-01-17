@@ -11,7 +11,9 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'role', 'password', 'password2')
+        fields = (
+            'id', 'email', 'first_name', 'last_name', 'role', 'password', 'password2'
+        )
         extra_kwargs = {
             'first_name': {'required': False},
             'last_name': {'required': False},
@@ -20,34 +22,40 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Passwords do not match"})
-
         if attrs['role'] == 'job_seeker' and not attrs.get('first_name'):
-            raise serializers.ValidationError({"first_name": "First name required for job seekers."})
-
+            raise serializers.ValidationError({"first_name": "First name is required for job seekers."})
         return attrs
 
     def create(self, validated_data):
         validated_data.pop('password2')
         password = validated_data.pop('password')
 
-        # Generate username
         email = validated_data.get('email')
         username = email.split('@')[0]
+
+        # Make username unique
         base_username = username
         counter = 1
         while User.objects.filter(username=username).exists():
             username = f"{base_username}{counter}"
             counter += 1
 
-        user = User.objects.create_user(username=username, password=password, **validated_data)
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            **validated_data
+        )
 
-        # Create default profile
-        if user.role == 'job_seeker':
+        # Create EmployerProfile if user is employer
+        if user.role == "employer":
+            EmployerProfile.objects.create(user=user)
+
+        # Optional: create JobSeekerProfile if role is job_seeker
+        elif user.role == "job_seeker":
             JobSeekerProfile.objects.create(user=user)
-        elif user.role == 'employer':
-            EmployerProfile.objects.create(user=user, company_name="")  # Empty, updated later
 
         return user
+
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
