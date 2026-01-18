@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import JobSeekerDashboard from "./pages/JobSeekerDashboard";
 import EmployerDashboard from "./pages/EmployerDashboard";
 import JobDetails from "./pages/JobDetails";
+import Savedjobs from "./pages/Savedjobs"; // new import
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/jobseeker-dashboard" element={<JobSeekerDashboard />} />
         <Route path="/employer-dashboard" element={<EmployerDashboard />} />
         <Route path="/jobs/:id" element={<JobDetails />} />
+       <Route path="/saved-jobs" element={<Savedjobs />} />
       </Routes>
     </Router>
   );

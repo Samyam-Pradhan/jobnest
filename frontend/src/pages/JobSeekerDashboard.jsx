@@ -10,7 +10,9 @@ function JobSeekerDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSection, setActiveSection] = useState("jobs");
   const [jobs, setJobs] = useState([]);
+  const [savedJobs, setSavedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [savedLoading, setSavedLoading] = useState(false);
   const navigate = useNavigate();
 
   const token = localStorage.getItem("access_token");
@@ -19,10 +21,11 @@ function JobSeekerDashboard() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
+  // Fetch job listings
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await api.get("jobs/"); // Jobseeker endpoint
+        const res = await api.get("jobs/");
         setJobs(res.data);
       } catch (err) {
         console.error(err);
@@ -30,8 +33,23 @@ function JobSeekerDashboard() {
         setLoading(false);
       }
     };
-
     if (activeSection === "jobs") fetchJobs();
+  }, [activeSection]);
+
+  // Fetch saved jobs
+  useEffect(() => {
+    const fetchSavedJobs = async () => {
+      setSavedLoading(true);
+      try {
+        const res = await api.get("saved-jobs/");
+        setSavedJobs(res.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setSavedLoading(false);
+      }
+    };
+    if (activeSection === "saved") fetchSavedJobs();
   }, [activeSection]);
 
   const handleSearch = (e) => {
@@ -71,15 +89,21 @@ function JobSeekerDashboard() {
             <CiCircleList /> Job Listings
           </button>
 
-          <button className="w-full px-3 py-2 rounded-lg mb-2 hover:bg-gray-100 flex items-center gap-2">
+          <button
+            onClick={() => setActiveSection("saved")}
+            className={`w-full px-3 py-2 rounded-lg mb-2 transition-colors flex items-center gap-2 ${
+              activeSection === "saved" ? "bg-indigo-100 text-indigo-700 font-semibold" : "hover:bg-gray-100 text-gray-700"
+            }`}
+          >
             <CiSaveDown2 /> Saved Jobs
           </button>
 
-          <button className="w-full px-3 py-2 rounded-lg mb-2 hover:bg-gray-100 flex items-center gap-2">
+          <button
+            className="w-full px-3 py-2 rounded-lg mb-2 hover:bg-gray-100 flex items-center gap-2"
+          >
             <CiCircleCheck /> Applied Jobs
           </button>
 
-          {/* Logout moved up */}
           <button
             onClick={handleLogout}
             className="w-full px-3 py-2 rounded-lg hover:bg-red-100 flex items-center gap-2 text-red-600 font-semibold mt-2"
@@ -90,9 +114,9 @@ function JobSeekerDashboard() {
 
         {/* Main Content */}
         <main className="flex-1 p-8 bg-gray-50 rounded-xl">
-          {activeSection === "profile" ? (
-            <JobSeekerProfile />
-          ) : (
+          {activeSection === "profile" && <JobSeekerProfile />}
+
+          {activeSection === "jobs" && (
             <>
               <form
                 onSubmit={handleSearch}
@@ -143,6 +167,38 @@ function JobSeekerDashboard() {
                       <button className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
                         Apply
                       </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {activeSection === "saved" && (
+            <>
+              <h2 className="text-2xl font-bold mb-6">Saved Jobs</h2>
+              {savedLoading ? (
+                <p>Loading saved jobs...</p>
+              ) : !savedJobs.length ? (
+                <p>No saved jobs.</p>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {savedJobs.map((item) => (
+                    <div
+                      key={item.id}
+                      className="p-5 bg-white shadow rounded cursor-pointer"
+                      onClick={() => navigate(`/jobs/${item.job.id}`)}
+                    >
+                      {item.job.company_logo && (
+                        <img
+                          src={item.job.company_logo}
+                          alt={item.job.company_name}
+                          className="w-12 h-12 rounded-full mb-2"
+                        />
+                      )}
+                      <h3 className="font-semibold text-indigo-600">{item.job.title}</h3>
+                      <p>{item.job.company_name}</p>
+                      <p className="text-gray-500">{item.job.location}</p>
                     </div>
                   ))}
                 </div>

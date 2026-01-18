@@ -8,17 +8,33 @@ function JobDetails() {
   const { id } = useParams();
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const token = localStorage.getItem("access_token");
+
+  const api = axios.create({
+    baseURL: "http://127.0.0.1:8000/api/",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const res = await axios.get(
-          `http://127.0.0.1:8000/api/jobs/${id}/`,
-          { headers: { Authorization: `Bearer ${token}` } }
+        // 1️⃣ Fetch job details
+        const jobRes = await api.get(`jobs/${id}/`);
+        setJob(jobRes.data);
+
+        // 2️⃣ Fetch saved jobs & check if this job is saved
+        const savedRes = await api.get("saved-jobs/");
+        const isSaved = savedRes.data.some(
+          (item) =>
+            item.id === jobRes.data.id || item.job?.id === jobRes.data.id
         );
-        setJob(res.data);
+
+        setSaved(isSaved);
       } catch (err) {
         console.error(err);
       } finally {
@@ -28,6 +44,18 @@ function JobDetails() {
 
     fetchJob();
   }, [id]);
+
+  const toggleSaveJob = async () => {
+    setSaving(true);
+    try {
+      await api.post(`saved-jobs/toggle/${id}/`);
+      setSaved((prev) => !prev);
+    } catch (err) {
+      console.error("Failed to toggle save job", err);
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (loading) return <p className="p-10">Loading...</p>;
   if (!job) return <p className="p-10">Job not found</p>;
@@ -60,15 +88,9 @@ function JobDetails() {
 
         {/* Job Info */}
         <div className="space-y-4">
-          <p>
-            <strong>Job Level:</strong> {job.job_level}
-          </p>
-          <p>
-            <strong>Experience Required:</strong> {job.experience}
-          </p>
-          <p>
-            <strong>Work Type:</strong> {job.work_type}
-          </p>
+          <p><strong>Job Level:</strong> {job.job_level}</p>
+          <p><strong>Experience Required:</strong> {job.experience}</p>
+          <p><strong>Work Type:</strong> {job.work_type}</p>
 
           <div>
             <h2 className="font-semibold text-lg mt-6 mb-2">
@@ -89,9 +111,24 @@ function JobDetails() {
           </div>
         </div>
 
-        <button className="mt-8 bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700">
-          Apply Now
-        </button>
+        {/* Action Buttons */}
+        <div className="mt-8 flex gap-4">
+          <button className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700">
+            Apply Now
+          </button>
+
+          <button
+            onClick={toggleSaveJob}
+            disabled={saving}
+            className={`px-6 py-2 rounded text-white transition ${
+              saved
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-green-600 hover:bg-green-700"
+            }`}
+          >
+            {saving ? "Saving..." : saved ? "Saved" : "Save Job"}
+          </button>
+        </div>
       </div>
 
       <Footer />
