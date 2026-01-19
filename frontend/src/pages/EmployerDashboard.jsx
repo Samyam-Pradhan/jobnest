@@ -12,7 +12,7 @@ import {
 
 function EmployerDashboard() {
   const [activeSection, setActiveSection] = useState("dashboard");
-  const [companyName, setCompanyName] = useState("Oracle");
+ const [companyName, setCompanyName] = useState("");
   const [postedJobs, setPostedJobs] = useState(0); // dynamic
   const [totalApplications, setTotalApplications] = useState(0); // optional, you can fetch dynamically if API exists
   const [recentActivity, setRecentActivity] = useState([
@@ -26,6 +26,21 @@ function EmployerDashboard() {
     baseURL: "http://127.0.0.1:8000/api/",
     headers: { Authorization: `Bearer ${token}` },
   });
+
+   useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await api.get("profile/employer"); // make sure this endpoint returns employer profile
+        setCompanyName(res.data.company_name);
+        setRecentActivity(res.data.recent_activity || []);
+        // If you have totalApplications or other stats, set them here
+      } catch (err) {
+        console.error("Failed to fetch employer profile:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   // Fetch Posted Jobs dynamically (same as MyJobs.jsx)
   useEffect(() => {

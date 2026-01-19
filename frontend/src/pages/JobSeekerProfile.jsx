@@ -16,6 +16,7 @@ function JobSeekerProfile() {
     cv: null,
   });
 
+  const [uploadedCV, setUploadedCV] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
@@ -26,14 +27,19 @@ function JobSeekerProfile() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
+  // Fetch profile
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await api.get("");
         setFormData({
           ...res.data,
-          cv: null,
+          cv: null, // never prefill file input
         });
+
+        if (res.data.cv) {
+          setUploadedCV(res.data.cv);
+        }
       } catch (err) {
         console.error(err);
         setMessage("Failed to load profile.");
@@ -41,29 +47,37 @@ function JobSeekerProfile() {
         setLoading(false);
       }
     };
+
     fetchProfile();
   }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: files ? files[0] : value,
-    });
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const data = new FormData();
     for (const key in formData) {
-      if (formData[key] !== null) {
+      if (formData[key] !== null && formData[key] !== "") {
         data.append(key, formData[key]);
       }
     }
+
     try {
-      await api.patch("", data, {
+      const res = await api.patch("", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
+      if (res.data.cv) {
+        setUploadedCV(res.data.cv);
+      }
+
       setMessage("Profile updated successfully!");
     } catch (err) {
       console.error(err);
@@ -72,7 +86,9 @@ function JobSeekerProfile() {
   };
 
   if (loading)
-    return <p className="text-center text-gray-500 mt-8">Loading profile...</p>;
+    return (
+      <p className="text-center text-gray-500 mt-8">Loading profile...</p>
+    );
 
   return (
     <div className="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-lg space-y-6">
@@ -81,7 +97,9 @@ function JobSeekerProfile() {
       {message && (
         <p
           className={`text-center font-medium ${
-            message.includes("success") ? "text-green-600" : "text-red-600"
+            message.includes("success")
+              ? "text-green-600"
+              : "text-red-600"
           }`}
         >
           {message}
@@ -105,16 +123,14 @@ function JobSeekerProfile() {
               placeholder="Full Name"
               value={formData.full_name}
               onChange={handleChange}
-              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
+              className="border p-3 rounded-lg w-full"
             />
             <input
               type="email"
               name="email"
-              placeholder="Email"
               value={formData.email}
-              onChange={handleChange}
               disabled
-              className="border p-3 rounded-lg bg-gray-100 w-full cursor-not-allowed"
+              className="border p-3 rounded-lg bg-gray-100 w-full"
             />
             <input
               type="text"
@@ -122,7 +138,7 @@ function JobSeekerProfile() {
               placeholder="Address"
               value={formData.address}
               onChange={handleChange}
-              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
+              className="border p-3 rounded-lg w-full"
             />
             <input
               type="text"
@@ -130,13 +146,13 @@ function JobSeekerProfile() {
               placeholder="Mobile Number"
               value={formData.mobile}
               onChange={handleChange}
-              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
+              className="border p-3 rounded-lg w-full"
             />
             <select
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
+              className="border p-3 rounded-lg w-full"
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
@@ -156,7 +172,7 @@ function JobSeekerProfile() {
               name="education_level"
               value={formData.education_level}
               onChange={handleChange}
-              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
+              className="border p-3 rounded-lg w-full"
             >
               <option value="">Education Level</option>
               <option value="highschool">High School</option>
@@ -170,7 +186,7 @@ function JobSeekerProfile() {
               placeholder="Degree"
               value={formData.degree}
               onChange={handleChange}
-              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
+              className="border p-3 rounded-lg w-full"
             />
             <input
               type="text"
@@ -178,7 +194,7 @@ function JobSeekerProfile() {
               placeholder="University Name"
               value={formData.university}
               onChange={handleChange}
-              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
+              className="border p-3 rounded-lg w-full"
             />
           </div>
         </section>
@@ -195,13 +211,13 @@ function JobSeekerProfile() {
               placeholder="Preferred Industry"
               value={formData.preferred_industry}
               onChange={handleChange}
-              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
+              className="border p-3 rounded-lg w-full"
             />
             <select
               name="job_level"
               value={formData.job_level}
               onChange={handleChange}
-              className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
+              className="border p-3 rounded-lg w-full"
             >
               <option value="">Job Level</option>
               <option value="intern">Intern</option>
@@ -217,15 +233,35 @@ function JobSeekerProfile() {
           <h3 className="text-xl font-semibold text-gray-700 border-b pb-2">
             Upload CV
           </h3>
+
+          {uploadedCV && (
+            <div className="bg-gray-100 p-4 rounded-lg flex justify-between items-center">
+              <span className="font-medium">
+                📄 {uploadedCV.split("/").pop()}
+              </span>
+              <a
+                href={`http://127.0.0.1:8000${uploadedCV}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-600 font-semibold hover:underline"
+              >
+                View
+              </a>
+            </div>
+          )}
+
           <input
             type="file"
             name="cv"
             onChange={handleChange}
-            className="border p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full"
+            className="border p-3 rounded-lg w-full"
           />
+
+          <p className="text-sm text-gray-500">
+            Uploading a new CV will replace the existing one.
+          </p>
         </section>
 
-        {/* Submit Button */}
         <button
           type="submit"
           className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
