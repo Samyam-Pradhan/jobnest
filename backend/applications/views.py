@@ -2,9 +2,10 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import SavedJob
-from .serializers import SavedJobSerializer
+from .models import SavedJob, Application
+from .serializers import SavedJobSerializer, ApplicationSerializer
 from jobs.models import Job
+
 
 class SavedJobListView(APIView):
     permission_classes = [IsAuthenticated]
@@ -31,3 +32,56 @@ class ToggleSaveJobView(APIView):
             return Response({"saved": False}, status=status.HTTP_200_OK)
 
         return Response({"saved": True}, status=status.HTTP_201_CREATED)
+
+
+class ApplyJobView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, job_id):
+        if request.user.role != 'job_seeker':
+            return Response({"error": "Only job seekers can apply."}, status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            job = Job.objects.get(id=job_id)
+        except Job.DoesNotExist:
+            return Response({"error": "Job not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        application, created = Application.objects.get_or_create(
+            applicant=request.user,
+            job=job
+        )
+
+        if not created:
+            return Response({"message": "You have already applied for this job."}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"message": "Application submitted successfully."}, status=status.HTTP_201_CREATED)
+
+
+class JobApplicantsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, job_id):
+        if request.user.role != 'employer':
+            return Response({"error": "Only employers can view applicants."}, status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            job = Job.objects.get(id=job_id, employer=request.user)
+        except Job.DoesNotExist:
+            return Response({"error": "Job not found or not yours."}, status=status.HTTP_404_NOT_FOUND)
+
+        applications = Application.objects.filter(job=job)
+        serializer = ApplicationSerializer(applications, many=True, context={'request': request})
+        return Response(serializer.data)
+
+class EmployerApplicationsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if request.user.role != 'employer':
+            return Response({"error": "Only employers can view applications."}, status=403)
+
+        applications = Application.objects.filter(
+            job__employer=request.user
+        ).select_related('job', 'applicant')
+        serializer = ApplicationSerializer(applications, many=True, context={'request': request})
+        return Response(serializer.data)

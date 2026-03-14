@@ -10,6 +10,9 @@ function JobDetails() {
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [applied, setApplied] = useState(false);
+  const [applying, setApplying] = useState(false);
+  const [applyMessage, setApplyMessage] = useState("");
 
   const token = localStorage.getItem("access_token");
 
@@ -23,18 +26,16 @@ function JobDetails() {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        // 1️⃣ Fetch job details
         const jobRes = await api.get(`jobs/${id}/`);
         setJob(jobRes.data);
 
-        // 2️⃣ Fetch saved jobs & check if this job is saved
         const savedRes = await api.get("saved-jobs/");
         const isSaved = savedRes.data.some(
           (item) =>
             item.id === jobRes.data.id || item.job?.id === jobRes.data.id
         );
-
         setSaved(isSaved);
+
       } catch (err) {
         console.error(err);
       } finally {
@@ -54,6 +55,25 @@ function JobDetails() {
       console.error("Failed to toggle save job", err);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleApply = async () => {
+    setApplying(true);
+    setApplyMessage("");
+    try {
+      await api.post(`jobs/${id}/apply/`);
+      setApplied(true);
+      setApplyMessage("Application submitted successfully!");
+    } catch (err) {
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Failed to apply.";
+      setApplyMessage(msg);
+      if (msg.includes("already applied")) setApplied(true);
+    } finally {
+      setApplying(false);
     }
   };
 
@@ -93,41 +113,50 @@ function JobDetails() {
           <p><strong>Work Type:</strong> {job.work_type}</p>
 
           <div>
-            <h2 className="font-semibold text-lg mt-6 mb-2">
-              Job Description
-            </h2>
-            <p className="text-gray-700 whitespace-pre-line">
-              {job.description}
-            </p>
+            <h2 className="font-semibold text-lg mt-6 mb-2">Job Description</h2>
+            <p className="text-gray-700 whitespace-pre-line">{job.description}</p>
           </div>
 
           <div>
-            <h2 className="font-semibold text-lg mt-6 mb-2">
-              Responsibilities
-            </h2>
-            <p className="text-gray-700 whitespace-pre-line">
-              {job.responsibilities}
-            </p>
+            <h2 className="font-semibold text-lg mt-6 mb-2">Responsibilities</h2>
+            <p className="text-gray-700 whitespace-pre-line">{job.responsibilities}</p>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-8 flex gap-4">
-          <button className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700">
-            Apply Now
-          </button>
+        <div className="mt-8 flex flex-col gap-3">
+          <div className="flex gap-4">
+            <button
+              onClick={handleApply}
+              disabled={applied || applying}
+              className={`px-6 py-2 rounded text-white transition ${
+                applied
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700"
+              }`}
+            >
+              {applying ? "Applying..." : applied ? "Applied ✓" : "Apply Now"}
+            </button>
 
-          <button
-            onClick={toggleSaveJob}
-            disabled={saving}
-            className={`px-6 py-2 rounded text-white transition ${
-              saved
-                ? "bg-red-600 hover:bg-red-700"
-                : "bg-green-600 hover:bg-green-700"
-            }`}
-          >
-            {saving ? "Saving..." : saved ? "Saved" : "Save Job"}
-          </button>
+            <button
+              onClick={toggleSaveJob}
+              disabled={saving}
+              className={`px-6 py-2 rounded text-white transition ${
+                saved
+                  ? "bg-red-600 hover:bg-red-700"
+                  : "bg-green-600 hover:bg-green-700"
+              }`}
+            >
+              {saving ? "Saving..." : saved ? "Saved" : "Save Job"}
+            </button>
+          </div>
+
+          {/* Apply feedback message */}
+          {applyMessage && (
+            <p className={`text-sm ${applied ? "text-green-600" : "text-red-500"}`}>
+              {applyMessage}
+            </p>
+          )}
         </div>
       </div>
 
