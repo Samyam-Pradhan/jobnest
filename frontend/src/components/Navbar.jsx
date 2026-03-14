@@ -14,7 +14,7 @@ function Navbar() {
     role === "job_seeker" ? "/jobseeker-dashboard" : "/employer-dashboard";
 
   const profilePath =
-    role === "job_seeker" ? "/jobseeker-profile" : "/employer-profile";
+    role === "job_seeker" ? "/jobseeker-dashboard" : "/employer-dashboard";
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);

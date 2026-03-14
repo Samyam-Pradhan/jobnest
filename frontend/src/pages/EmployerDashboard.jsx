@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import PostJob from "./PostJob";
+import PostJob from "./Postjob";
 import EmployerProfile from "./EmployerProfile";
-import MyJobs from "./MyJobs";
+import MyJobs from "./Myjobs";
 import Applications from "./Applications";
 import axios from "axios";
 import {
