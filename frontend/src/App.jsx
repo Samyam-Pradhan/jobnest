@@ -7,7 +7,7 @@ import Signup from "./pages/Signup";
 import JobSeekerDashboard from "./pages/JobSeekerDashboard";
 import EmployerDashboard from "./pages/EmployerDashboard";
 import JobDetails from "./pages/JobDetails";
-import Savedjobs from "./pages/Savedjobs"; // new import
+import Savedjobs from "./pages/Savedjobs"; 
 import JobApplicants from "./pages/JobApplicants";
 
 function App() {
