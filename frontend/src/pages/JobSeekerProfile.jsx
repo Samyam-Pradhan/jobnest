@@ -25,7 +25,6 @@ function JobSeekerProfile() {
     job_level: "",
     cv: null,
   });
-
   const [uploadedCV, setUploadedCV] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -38,8 +37,6 @@ function JobSeekerProfile() {
     baseURL: "http://127.0.0.1:8000/api/profile/",
     headers: { Authorization: `Bearer ${token}` },
   });
-
-  // Fetch profile
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -62,7 +59,6 @@ function JobSeekerProfile() {
 
     fetchProfile();
   }, []);
-
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -70,7 +66,6 @@ function JobSeekerProfile() {
       [name]: files ? files[0] : value,
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -82,19 +77,14 @@ function JobSeekerProfile() {
         data.append(key, formData[key]);
       }
     }
-
     try {
       const res = await api.patch("", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
       if (res.data.cv) {
         setUploadedCV(res.data.cv);
       }
-
       setMessage({ text: "Profile updated successfully!", type: "success" });
-      
-      // Clear message after 3 seconds
       setTimeout(() => setMessage({ text: "", type: "" }), 3000);
     } catch (err) {
       console.error(err);
@@ -123,16 +113,13 @@ function JobSeekerProfile() {
 
   return (
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
+      <div className="bg-linear-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
           <CiUser className="text-3xl" />
           Job Seeker Profile
         </h2>
         <p className="text-blue-100 mt-1">Manage your personal information and job preferences</p>
       </div>
-
-      {/* Tabs */}
       <div className="border-b border-gray-200 px-8">
         <div className="flex gap-6 overflow-x-auto">
           {tabs.map(({ id, label, icon: Icon }) => (
@@ -151,8 +138,6 @@ function JobSeekerProfile() {
           ))}
         </div>
       </div>
-
-      {/* Message */}
       {message.text && (
         <div className={`mx-8 mt-6 p-4 rounded-lg ${
           message.type === "success" 
@@ -175,7 +160,6 @@ function JobSeekerProfile() {
       )}
 
       <form onSubmit={handleSubmit} className="p-8" encType="multipart/form-data">
-        {/* Personal Information Tab */}
         {activeTab === "personal" && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -255,8 +239,6 @@ function JobSeekerProfile() {
             </div>
           </div>
         )}
-
-        {/* Education Tab */}
         {activeTab === "education" && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -306,8 +288,6 @@ function JobSeekerProfile() {
             </div>
           </div>
         )}
-
-        {/* Job Preferences Tab */}
         {activeTab === "preferences" && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -345,8 +325,6 @@ function JobSeekerProfile() {
             </div>
           </div>
         )}
-
-        {/* CV Tab */}
         {activeTab === "cv" && (
           <div className="space-y-6">
             <div>
@@ -402,8 +380,6 @@ function JobSeekerProfile() {
             </div>
           </div>
         )}
-
-        {/* Save Button */}
         <div className="mt-8 pt-6 border-t border-gray-200">
           <button
             type="submit"

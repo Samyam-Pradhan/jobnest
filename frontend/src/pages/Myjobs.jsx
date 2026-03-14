@@ -61,8 +61,7 @@ function MyJobs() {
 
   return (
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
+      <div className="bg-linear-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
           <FaBriefcase className="text-2xl" />
           My Posted Jobs
@@ -76,7 +75,6 @@ function MyJobs() {
               key={job.id}
               className="bg-white border border-gray-200 rounded-xl hover:shadow-lg transition-all duration-300 overflow-hidden group"
             >
-              {/* Job Header */}
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
@@ -92,8 +90,6 @@ function MyJobs() {
                     Active
                   </span>
                 </div>
-
-                {/* Job Details */}
                 <div className="space-y-3 mb-4">
                   <div className="flex items-center text-gray-600 text-sm">
                     <FaMapMarkerAlt className="mr-3 text-gray-400 w-4" />
@@ -115,8 +111,6 @@ function MyJobs() {
                     <span>{job.work_type}</span>
                   </div>
                 </div>
-
-                {/* Posted Date */}
                 <div className="flex items-center text-xs text-gray-400 border-t border-gray-100 pt-4">
                   <FaCalendarAlt className="mr-2" />
                   <span>Posted on: {new Date(job.created_at).toLocaleDateString('en-US', {
@@ -128,8 +122,6 @@ function MyJobs() {
                   })}</span>
                 </div>
               </div>
-
-              {/* Action Buttons */}
               <div className="flex border-t border-gray-100 divide-x divide-gray-100">
                 <button className="flex-1 py-3 text-sm font-medium text-gray-600 hover:text-[#3A4EF9] hover:bg-blue-50 transition flex items-center justify-center gap-2">
                   <FaEye className="text-base" />

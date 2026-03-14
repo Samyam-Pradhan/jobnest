@@ -4,9 +4,8 @@ import { FaBriefcase, FaFacebook, FaLinkedin, FaTwitter, FaInstagram } from "rea
 
 function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white">
+    <footer className="bg-linear-to-r from-blue-900 to-indigo-900 text-white">
       <div className="max-w-7xl mx-auto px-8 py-16 grid grid-cols-1 md:grid-cols-4 gap-12">
-        {/* Logo Section with Briefcase Icon */}
         <div className="flex flex-col items-center md:items-start">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg">
@@ -18,8 +17,6 @@ function Footer() {
             Connecting talented professionals with amazing companies. Find your dream job or the perfect candidate today.
           </p>
         </div>
-
-        {/* Site Map */}
         <div className="flex flex-col items-center md:items-start">
           <h3 className="text-lg font-semibold mb-6 relative">
             Site Map
@@ -52,8 +49,6 @@ function Footer() {
             </li>
           </ul>
         </div>
-
-        {/* Legal */}
         <div className="flex flex-col items-center md:items-start">
           <h3 className="text-lg font-semibold mb-6 relative">
             Legal
@@ -74,8 +69,6 @@ function Footer() {
             </li>
           </ul>
         </div>
-
-        {/* Socials */}
         <div className="flex flex-col items-center md:items-start">
           <h3 className="text-lg font-semibold mb-6 relative">
             Socials
@@ -111,8 +104,6 @@ function Footer() {
               <FaInstagram className="text-white text-lg group-hover:scale-110 transition" />
             </a>
           </div>
-          
-          {/* Newsletter signup */}
           <div className="mt-6 w-full">
             <p className="text-blue-200 text-sm mb-2">Stay updated</p>
             <div className="flex">
@@ -128,8 +119,6 @@ function Footer() {
           </div>
         </div>
       </div>
-
-      {/* Bottom Bar */}
       <div className="border-t border-blue-800">
         <div className="max-w-7xl mx-auto px-8 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-blue-200">
           <p>© {new Date().getFullYear()} JobNest. All rights reserved.</p>
@@ -143,5 +132,4 @@ function Footer() {
     </footer>
   );
 }
-
 export default Footer;

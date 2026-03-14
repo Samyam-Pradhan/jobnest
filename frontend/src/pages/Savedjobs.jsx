@@ -32,19 +32,15 @@ function SavedJobs() {
       </div>
     );
   }
-
   return (
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
+      <div className="bg-linear-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
           <FaBookmark className="text-2xl" />
           Saved Jobs
         </h2>
         <p className="text-blue-100 mt-1">Jobs you've bookmarked for later</p>
       </div>
-
-      {/* Content */}
       <div className="p-8">
         {!jobs.length ? (
           <div className="text-center py-16">
@@ -68,10 +64,7 @@ function SavedJobs() {
                 onClick={() => navigate(`/jobs/${item.job.id}`)}
                 className="bg-white border border-gray-200 rounded-xl hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer"
               >
-                {/* Removed the blue accent bar */}
-                
                 <div className="p-6">
-                  {/* Header with company info */}
                   <div className="flex items-start gap-3 mb-4">
                     {item.job.company_logo ? (
                       <img
@@ -94,8 +87,6 @@ function SavedJobs() {
                       </p>
                     </div>
                   </div>
-
-                  {/* Job details in grid */}
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     <div className="flex items-center text-gray-600 text-sm bg-gray-50 p-2 rounded-lg">
                       <FaMapMarkerAlt className="mr-2 text-gray-500 w-3" />
@@ -117,8 +108,6 @@ function SavedJobs() {
                       <span className="truncate">{item.job.work_type}</span>
                     </div>
                   </div>
-
-                  {/* Saved date */}
                   <div className="flex items-center text-xs text-gray-400 border-t border-gray-100 pt-4">
                     <FaBookmark className="mr-2 text-gray-400 text-xs" />
                     <span>Saved on: {new Date(item.saved_at).toLocaleDateString('en-US', {

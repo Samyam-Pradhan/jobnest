@@ -79,7 +79,7 @@ function JobDetails() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
         <Navbar />
         <div className="flex justify-center items-center h-[calc(100vh-200px)]">
           <p className="text-gray-500">Loading job details...</p>
@@ -91,7 +91,7 @@ function JobDetails() {
 
   if (!job) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
         <Navbar />
         <div className="flex justify-center items-center h-[calc(100vh-200px)]">
           <div className="bg-white p-8 rounded-xl shadow-lg text-center">
@@ -106,13 +106,11 @@ function JobDetails() {
       </div>
     );
   }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
       <Navbar />
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Back button */}
         <button 
           onClick={() => window.history.back()}
           className="flex items-center text-gray-600 hover:text-[#3A4EF9] transition-colors mb-6 group"
@@ -122,10 +120,7 @@ function JobDetails() {
           </svg>
           Back to Jobs
         </button>
-
-        {/* Main Content */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          {/* Header Section with Company Info */}
           <div className="relative h-48 bg-[#3A4EF9]">
             <div className="absolute -bottom-12 left-8 flex items-end">
               <div className="bg-white p-2 rounded-2xl shadow-lg">
@@ -145,8 +140,6 @@ function JobDetails() {
               </div>
             </div>
           </div>
-
-          {/* Job Title and Basic Info */}
           <div className="pt-16 px-8 pb-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">{job.title}</h1>
@@ -157,26 +150,21 @@ function JobDetails() {
               </div>
             </div>
           </div>
-
-          {/* Job Details Grid */}
           <div className="px-8 pb-8">
-            {/* Quick Info Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-xl">
+              <div className="bg-linear-to-br from-blue-50 to-indigo-50 p-4 rounded-xl">
                 <p className="text-sm text-gray-600 mb-1">Job Level</p>
                 <p className="font-semibold text-gray-900">{job.job_level}</p>
               </div>
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-xl">
+              <div className="bg-linear-to-br from-purple-50 to-pink-50 p-4 rounded-xl">
                 <p className="text-sm text-gray-600 mb-1">Experience</p>
                 <p className="font-semibold text-gray-900">{job.experience}</p>
               </div>
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl">
+              <div className="bg-linear-to-br from-green-50 to-emerald-50 p-4 rounded-xl">
                 <p className="text-sm text-gray-600 mb-1">Work Type</p>
                 <p className="font-semibold text-gray-900">{job.work_type}</p>
               </div>
             </div>
-
-            {/* Job Description */}
             <div className="mb-8">
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <svg className="w-6 h-6 text-[#3A4EF9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,8 +176,6 @@ function JobDetails() {
                 {job.description}
               </div>
             </div>
-
-            {/* Responsibilities */}
             <div className="mb-8">
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <svg className="w-6 h-6 text-[#3A4EF9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -201,8 +187,6 @@ function JobDetails() {
                 {job.responsibilities}
               </div>
             </div>
-
-            {/* Apply feedback message */}
             {applyMessage && (
               <div className={`mb-6 p-4 rounded-lg ${
                 applied ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800"
@@ -221,8 +205,6 @@ function JobDetails() {
                 </p>
               </div>
             )}
-
-            {/* Action Buttons at Bottom */}
             <div className="flex gap-3 pt-6 border-t border-gray-100">
               <button
                 onClick={handleApply}
@@ -290,10 +272,8 @@ function JobDetails() {
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );
 }
-
 export default JobDetails;

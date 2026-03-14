@@ -2,19 +2,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { 
   FaUsers, 
-  FaFileAlt, 
-  FaCheckCircle, 
-  FaTimesCircle,
-  FaClock,
   FaEye,
   FaDownload,
   FaFilter,
   FaRedoAlt
 } from "react-icons/fa";
 import { CiFileOn } from "react-icons/ci";
-
 const api = axios.create({ baseURL: "http://127.0.0.1:8000/api/" });
-
 const getAuthHeaders = () => ({
   Authorization: `Bearer ${localStorage.getItem("access_token")}`,
 });
@@ -36,12 +30,9 @@ function AppRow({ app }) {
 
   return (
     <div className="flex items-center gap-4 py-5 border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition px-2 rounded-lg">
-      {/* Avatar */}
-      <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#3A4EF9] to-[#2A3ED9] flex items-center justify-center font-bold text-white flex-shrink-0">
+      <div className="w-12 h-12 rounded-full bg-linear-to-r from-[#3A4EF9] to-[#2A3ED9] flex items-center justify-center font-bold text-white shrink-0">
         {initials}
       </div>
-
-      {/* Info */}
       <div className="flex-1 min-w-0">
         <p className="font-semibold text-gray-900 truncate">
           {app.applicant_name}
@@ -53,19 +44,15 @@ function AppRow({ app }) {
           {app.job?.title}
         </p>
       </div>
-
-      {/* Date */}
-      <span className="text-sm text-gray-500 flex-shrink-0 hidden md:block">
+      <span className="text-sm text-gray-500 shrink-0 hidden md:block">
         {new Date(app.applied_at).toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
           year: "numeric",
         })}
       </span>
-
-      {/* Status badge */}
       <span
-        className="text-xs font-semibold px-4 py-2 rounded-full flex-shrink-0"
+        className="text-xs font-semibold px-4 py-2 rounded-full shrink-0"
         style={{
           background: cfg.bg,
           color: cfg.color,
@@ -73,20 +60,18 @@ function AppRow({ app }) {
       >
         {cfg.label}
       </span>
-
-      {/* CV link */}
       {app.cv ? (
         <a
           href={app.cv}
           target="_blank"
           rel="noreferrer"
-          className="text-sm text-[#3A4EF9] font-medium flex items-center gap-1 flex-shrink-0 hover:underline"
+          className="text-sm text-[#3A4EF9] font-medium flex items-center gap-1 shrink-0 hover:underline"
         >
           <FaEye className="text-xs" />
           View CV
         </a>
       ) : (
-        <span className="text-sm text-gray-400 flex-shrink-0">No CV</span>
+        <span className="text-sm text-gray-400 shrink-0">No CV</span>
       )}
     </div>
   );
@@ -138,14 +123,13 @@ export default function Applications() {
   return (
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
+      <div className="bg-linear-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
           <FaUsers className="text-2xl" />
           Applications
         </h2>
         <p className="text-blue-100 mt-1">Review and manage job applications</p>
       </div>
-      {/* Filter Bar */}
       {applications.length > 0 && (
         <div className="px-8 py-4 border-b border-gray-100 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -163,8 +147,6 @@ export default function Applications() {
           </button>
         </div>
       )}
-
-      {/* Content */}
       {applications.length === 0 ? (
         <div className="p-16 text-center">
           <CiFileOn className="text-6xl text-gray-300 mx-auto mb-4" />

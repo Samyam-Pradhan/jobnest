@@ -65,16 +65,13 @@ function PostJob() {
 
   return (
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
+      <div className="bg-linear-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
           <FaBriefcase className="text-2xl" />
           Post a New Job
         </h2>
         <p className="text-blue-100 mt-1">Create a job listing to find the perfect candidate</p>
       </div>
-
-      {/* Message */}
       {message.text && (
         <div className={`mx-8 mt-6 p-4 rounded-lg ${
           message.type === "success" 
@@ -112,8 +109,6 @@ function PostJob() {
             />
           </div>
         </div>
-
-        {/* Location & Job Level */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Location </label>
@@ -151,8 +146,6 @@ function PostJob() {
             </div>
           </div>
         </div>
-
-        {/* Experience & Work Type */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Experience Required </label>
@@ -188,8 +181,6 @@ function PostJob() {
             </div>
           </div>
         </div>
-
-        {/* Job Description */}
         <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700 mb-2">Job Description </label>
           <div className="relative">
@@ -204,8 +195,6 @@ function PostJob() {
             />
           </div>
         </div>
-
-        {/* Responsibilities */}
         <div className="mb-8">
           <label className="block text-sm font-medium text-gray-700 mb-2">Responsibilities </label>
           <div className="relative">
@@ -220,8 +209,6 @@ function PostJob() {
             />
           </div>
         </div>
-
-        {/* Preview Card (Optional visual helper) */}
         {Object.values(formData).some(val => val) && (
           <div className="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-100">
             <h4 className="text-sm font-semibold text-[#3A4EF9] flex items-center gap-2 mb-3">
@@ -238,8 +225,6 @@ function PostJob() {
             </div>
           </div>
         )}
-
-        {/* Submit Button */}
         <div className="pt-6 border-t border-gray-200">
           <button
             type="submit"

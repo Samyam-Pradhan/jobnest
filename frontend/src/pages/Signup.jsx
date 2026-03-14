@@ -65,14 +65,10 @@ function Signup() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
         <div className="flex items-center justify-center p-8 min-h-[calc(100vh-200px)]">
-          
-          {/* Main Container - Same size as Login */}
           <div className="flex flex-col md:flex-row max-w-6xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden">
-            
-            {/* Left - Signup Form (Blue) */}
-            <div className="md:w-1/2 bg-gradient-to-br from-[#3A4EF9] to-[#2A3ED9] p-12 lg:p-16 flex items-center order-2 md:order-1">
+            <div className="md:w-1/2 bg-linear-to-br from-[#3A4EF9] to-[#2A3ED9] p-12 lg:p-16 flex items-center order-2 md:order-1">
               <div className="w-full max-w-md mx-auto text-white">
                 <h2 className="text-4xl font-bold mb-3">
                   Create Account
@@ -193,8 +189,6 @@ function Signup() {
                 </p>
               </div>
             </div>
-
-            {/* Right - Image Container (White) */}
             <div className="md:w-1/2 bg-white p-12 flex items-center justify-center order-1 md:order-2">
               <img
                 src={loginImage}

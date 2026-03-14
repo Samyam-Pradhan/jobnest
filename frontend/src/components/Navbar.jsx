@@ -52,22 +52,17 @@ function Navbar() {
       style={{ backgroundColor: "#FFFFFF" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-
-        {/* Logo with Briefcase Icon */}
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-9 h-9 bg-gradient-to-r from-[#3A4EF9] to-[#2A3ED9] rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition">
+          <div className="w-9 h-9 bg-linear-to-r from-[#3A4EF9] to-[#2A3ED9] rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition">
             <FaBriefcase className="text-white text-lg" />
           </div>
           <span className="text-xl font-bold text-gray-900">
             Job<span className="text-[#3A4EF9]">Nest</span>
           </span>
         </Link>
-
-        {/* Right side */}
         <div className="flex items-center gap-2">
 
           {!isLoggedIn ? (
-            /* ── Logged out ── */
             <>
               <Link 
                 to="/" 
@@ -89,18 +84,13 @@ function Navbar() {
               </Link>
             </>
           ) : (
-            /* ── Logged in ── */
             <div className="flex items-center gap-2">
-
-              {/* Dashboard link */}
               <Link
                 to={dashboardPath}
                 className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition"
               >
                 Dashboard
               </Link>
-
-              {/* Profile link */}
               <Link
                 to={profilePath}
                 className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition flex items-center gap-1"
@@ -108,8 +98,6 @@ function Navbar() {
                 <CiUser className="text-lg" />
                 <span className="hidden sm:inline">Profile</span>
               </Link>
-
-              {/* Notifications bell */}
               <button
                 className="relative w-9 h-9 rounded-lg flex items-center justify-center hover:bg-gray-100 transition"
                 title="Notifications"
@@ -117,13 +105,6 @@ function Navbar() {
                 <CiBellOn className="text-xl text-gray-600" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
               </button>
-
-              {/* User info */}
-              <div className="hidden md:block text-sm text-gray-700 font-medium px-2">
-                {username.split(' ')[0]}
-              </div>
-
-              {/* Logout */}
               <button
                 onClick={handleLogout}
                 className="px-4 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition flex items-center gap-1"
@@ -139,5 +120,4 @@ function Navbar() {
     </nav>
   );
 }
-
 export default Navbar;

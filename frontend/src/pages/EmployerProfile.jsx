@@ -117,8 +117,7 @@ function EmployerProfile() {
 
   return (
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
+      <div className="bg-linear-to-r from-[#3A4EF9] to-[#2A3ED9] px-8 py-6">
         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
           <FaBuilding className="text-2xl" />
           Company Profile
@@ -169,7 +168,6 @@ function EmployerProfile() {
       )}
 
       <form onSubmit={handleSubmit} className="p-8" encType="multipart/form-data">
-        {/* Company Info Tab */}
         {activeTab === "company" && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -188,7 +186,6 @@ function EmployerProfile() {
                   />
                 </div>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Contact Email</label>
                 <div className="relative">
@@ -203,7 +200,6 @@ function EmployerProfile() {
                   />
                 </div>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
                 <div className="relative">
@@ -218,7 +214,6 @@ function EmployerProfile() {
                   />
                 </div>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Website URL</label>
                 <div className="relative">
@@ -233,7 +228,6 @@ function EmployerProfile() {
                   />
                 </div>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
                 <div className="relative">
@@ -248,7 +242,6 @@ function EmployerProfile() {
                   />
                 </div>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Company Size</label>
                 <div className="relative">
@@ -270,8 +263,6 @@ function EmployerProfile() {
             </div>
           </div>
         )}
-
-        {/* About Tab */}
         {activeTab === "about" && (
           <div className="space-y-6">
             <div>
@@ -290,8 +281,6 @@ function EmployerProfile() {
             </div>
           </div>
         )}
-
-        {/* Logo Tab */}
         {activeTab === "logo" && (
           <div className="space-y-6">
             <div>
@@ -306,13 +295,12 @@ function EmployerProfile() {
                     />
                   </div>
                 ) : (
-                  <div className="w-40 h-40 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center border-4 border-white shadow-lg mb-4">
+                  <div className="w-40 h-40 bg-linear-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center border-4 border-white shadow-lg mb-4">
                     <FaBuilding className="text-5xl text-gray-400" />
                   </div>
                 )}
               </div>
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Upload New Logo</label>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-[#3A4EF9] transition">
@@ -333,8 +321,6 @@ function EmployerProfile() {
             </div>
           </div>
         )}
-
-        {/* Save Button */}
         <div className="mt-8 pt-6 border-t border-gray-200">
           <button
             type="submit"
@@ -358,5 +344,4 @@ function EmployerProfile() {
     </div>
   );
 }
-
 export default EmployerProfile;
