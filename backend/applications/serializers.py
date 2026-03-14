@@ -25,6 +25,7 @@ class ApplicationSerializer(serializers.ModelSerializer):
     applicant_name = serializers.SerializerMethodField()
     applicant_email = serializers.SerializerMethodField()
     cv = serializers.SerializerMethodField()
+    job = JobSerializer(read_only=True)   
 
     class Meta:
         model = Application
