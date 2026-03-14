@@ -44,10 +44,8 @@ function Navbar() {
       style={{ backgroundColor: "#FEFEFF" }}
     >
       <div className="max-w-7xl mx-auto px-2 sm:px-4 h-16 flex items-center justify-between">
-
-        {/* Logo */}
         <Link to="/" className="flex items-center gap-1.5">
-          <svg className="w-7 h-7 flex-shrink-0" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="w-7 h-7 shrink-0" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="38" height="38" rx="10" fill="#3A4EF9" />
             <rect x="9" y="16" width="20" height="14" rx="2.5" fill="white" fillOpacity="0.95" />
             <path d="M15 16v-2a2 2 0 012-2h4a2 2 0 012 2v2" stroke="white" strokeWidth="1.8" strokeLinecap="round" fill="none" />
@@ -58,8 +56,6 @@ function Navbar() {
             JobNest
           </span>
         </Link>
-
-        {/* Nav Links + Actions */}
         <div className="flex items-center">
           {!isLoggedIn ? (
             <>
@@ -76,8 +72,6 @@ function Navbar() {
             </>
           ) : (
             <div className="flex items-center gap-3">
-
-              {/* User icon — light background, tooltip on hover */}
               <div className="relative">
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
@@ -94,8 +88,6 @@ function Navbar() {
                     <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
                   </svg>
                 </div>
-
-                {/* Tooltip */}
                 {showTooltip && (
                   <div
                     className="absolute top-full left-1/2 mt-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-white shadow-lg whitespace-nowrap pointer-events-none z-50"
@@ -112,8 +104,6 @@ function Navbar() {
                   </div>
                 )}
               </div>
-
-              {/* Logout button - red */}
               <button
                 onClick={handleLogout}
                 className="px-3.5 py-1.5 rounded-full text-sm font-medium text-white"

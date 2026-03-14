@@ -42,7 +42,7 @@ function Login() {
         <div className="flex-1 flex items-center justify-center p-6">
           
           {/* Main Container - Increased height with min-h-[650px] */}
-          <div className="flex flex-col md:flex-row max-w-6xl w-full min-h-[650px] bg-white rounded-3xl shadow-xl overflow-hidden relative">
+          <div className="flex flex-col md:flex-row max-w-6xl w-full min-h-162.5 bg-white rounded-3xl shadow-xl overflow-hidden relative">
             
             {/* Left - Image Container with White Background */}
             <div className="md:w-1/2 bg-white p-8 flex items-center justify-center relative overflow-hidden">
@@ -104,7 +104,7 @@ function Login() {
 
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition shadow-md"
+                    className="w-full bg-linear-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition shadow-md"
                   >
                     Login
                   </button>
